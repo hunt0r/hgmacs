@@ -1,5 +1,5 @@
 install_prelude () {
-    printf " Cloning Emacs Prelude's GitHub repository...\n$RESET"
+    printf " Cloning HGMacs (fork of Prelude's) GitHub repository...\n$RESET"
     if [ x$PRELUDE_VERBOSE != x ]
     then
         /usr/bin/env git clone $PRELUDE_URL "$PRELUDE_INSTALL_DIR"
@@ -49,35 +49,19 @@ colors_ () {
     esac
 }
 
-# Commandline args:
-# -d/--directory [dir]
-#   Install prelude into the specified directory. If 'dir' is a relative path prefix it with $HOME.
-#   Defaults to '$HOME/.emacs.d'
-# -c/--colors
-#   Enable colors
-# -s/--source [url]
-#   Clone prelude from 'url'.
-#   Defaults to 'https://github.com/bbatsov/prelude.git'
-# -i/--into
-#   If one exists, install into the existing config
-# -n/--no-bytecompile
-#   Skip the compilation of the prelude files.
-# -h/--help
-#   Print help
-# -v/--verbose
-#   Verbose output, for debugging
-
 usage() {
     printf "Usage: $0 [OPTION]\n"
     printf "  -c, --colors \t \t \t Enable colors.\n"
-    printf "  -d, --directory [dir] \t Install Prelude into the specified directory.\n"
+    printf "  -d, --directory [dir] \t Install into the specified directory.\n"
+    # If 'dir' is a relative path prefix it with $HOME.
+    # Defaults to '$HOME/.emacs.d'
     printf "  \t \t \t \t If 'dir' is a relative path prefix with $HOME.\n"
     printf "  \t \t \t \t Defaults to $HOME/.emacs.d\n"
-    printf "  -s, --source [url] \t \t Clone Prelude from 'url'.\n"
-    printf "  \t \t \t \t Defaults to 'https://github.com/bbatsov/prelude.git'.\n"
+    printf "  -s, --source [url] \t \t Clone from this 'url'.\n"
+    printf "  \t \t \t \t Defaults to 'https://github.com/hunt0r/hgmacs.git'.\n"
     printf "  -n, --no-bytecompile \t \t Skip the bytecompilation step of Prelude.\n"
-    printf "  -i, --into \t \t \t Install Prelude into a subdirectory in the existing configuration\n"
-    printf "  \t \t \t \t The default behavior is to install Prelude into the existing\n"
+    printf "  -i, --into \t \t \t Install into a subdirectory in the existing configuration\n"
+    printf "  \t \t \t \t The default behavior is to install into the existing\n"
     printf "  \t \t \t \t Emacs configuration (.emacs.d).\n"
     printf "  -h, --help \t \t \t Display this help and exit\n"
     printf "  -v, --verbose \t \t Display verbose information\n"
@@ -125,7 +109,7 @@ done
 
 VERBOSE_COLOR=$BBLUE
 
-[ -z "$PRELUDE_URL" ] && PRELUDE_URL="https://github.com/bbatsov/prelude.git"
+[ -z "$PRELUDE_URL" ] && PRELUDE_URL="https://github.com/hunt0r/hgmacs.git"
 [ -z "$PRELUDE_INSTALL_DIR" ] && PRELUDE_INSTALL_DIR="$HOME/.emacs.d"
 
 if [ x$PRELUDE_VERBOSE != x ]
