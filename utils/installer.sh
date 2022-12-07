@@ -200,7 +200,6 @@ else
     # Nothing yet so just install prelude
     install_prelude
     make_prelude_dirs
-    cp "$PRELUDE_INSTALL_DIR/sample/prelude-modules.el" "$PRELUDE_INSTALL_DIR/personal"
 fi
 
 if [ -z "$PRELUDE_SKIP_BC" ];
