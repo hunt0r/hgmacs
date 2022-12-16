@@ -12,6 +12,12 @@
 (when (eq system-type 'darwin) (setq ns-function-modifier 'none))
 (setq scroll-conservatively 0)
 (setq scroll-preserve-screen-position nil)
+(setq scroll-error-top-bottom t)
+(defalias 'sp-strict 'smartparens-strict-mode)
+
+;; Auth saved my ssh password in raw text form, I didn't like that.
+;; Would be glad to find some more secure option...
+(setq auth-source-save-behavior nil)
 
 (add-hook 'c++-mode-hook (lambda () (setq fill-column hgmacs-column-size)))
 (add-hook 'python-mode-hook (lambda () (setq fill-column hgmacs-column-size)))
@@ -93,23 +99,18 @@
 (global-set-key (kbd "C-x 4 3") 'hgmacs-split-window-three-horizontal)
 
 ;; Org mode keybindings (from Org mode 1.3)
-(global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
 
 (prelude-require-package 'vterm)
 (require 'vterm)
 (setq vterm-buffer-name "*term*")
+;; crux seems to assume one terminal, stomping on vterm's multi-terminal possibility.
+;; I could potentially contribute an upgrade?
+(setq crux-shell-func 'vterm)
+(setq crux-term-func 'vterm)
+(setq crux-term-buffer-name vterm-buffer-name)
 (setq vterm-max-scrollback (floor 1e5))
 (setq vterm-min-window-width hgmacs-column-size)
-(add-hook 'vterm-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-l")) ; Since C-l does not preserve scrollback, disable it
-            (local-unset-key (kbd "C-S-h")) ; No need to send this to term, it's my help key
-            (local-set-key (kbd "C-c C-x RET") 'vterm-send-C-x) ; Need this to kill the nano opened by vterm when using git
-            (local-set-key (kbd "C-k") 'vterm-kill)))
-
 (defun unbind-c-a-in-vterm ()
   "Fix C-a behavior in vterm, Adapted from Prelude's suggestion in troubleshooting.md"
   (let ((oldmap (cdr (assoc 'prelude-mode minor-mode-map-alist)))
@@ -118,37 +119,25 @@
     (define-key newmap (kbd "C-a") nil)
     (make-local-variable 'minor-mode-overriding-map-alist)
     (push `(prelude-mode . ,newmap) minor-mode-overriding-map-alist)))
-(add-hook 'vterm-mode-hook (lambda () (unbind-c-a-in-vterm)))
 
-;; TODO overwrite/fix prelude-mode-map keymap so that C-C t runs my vterm command
-;; This requires learning about keymaps
-;; TODO integrate vterm and whatever crux is doing with terminal?
+(defun vterm-kill ()
+  "Kill text in regular Emacs way and also C-k to vterm."
+  ;; The read-only vterm buffer does not respond well to the kill command, so this copies instead.
+  (interactive)
+  (save-excursion
+    (push-mark)
+    (move-end-of-line ())
+    (copy-region-as-kill (mark) (point)))
+  (vterm-send (kbd "C-k")))
 
-;; (defun vterm-kill ()
-;;   "Kill text in regular Emacs way and also C-k to vterm."
-;;   ;; WARNING: THIS FUNCTION DOES NOT WORK CORRECTLY RIGHT NOW.
-;;   ;; The read-only vterm buffer does not respond well to the kill command.
-;;   ;; A possible solution: copy-to-end-of-line, then vterm-send-C-k
-;;   (interactive)
-;;   (save-excursion
-;;     (push-mark)
-;;     (move-end-of-line ())
-;;     (copy-region-as-kill (mark) (point)))
-;;   ;; (kill-line arg) ;; Since readonly, does not actually kill, only copies
-;;   ;; (vterm-send-C-a) ;; This is a cheap workaround, but it works :)
-;;   (vterm-send-C-k))
-
-;; (defun hterm-mode-hook ()
-;; ;; HGM: looks like Ctrl-l in char mode eliminates some history instead of just scrolling. TODO: Mask this?
-;;   (define-key term-raw-map (kbd "C-y") 'term-paste)
-;;   (define-key term-raw-map (kbd "C-k")
-;;     (lambda ()
-;;       (interactive)
-;;       (term-send-raw-string "\C-k")
-;;       (kill-line))))
-;; (add-hook 'term-mode-hook 'hterm-mode-hook)
-;; ;; (global-set-key (kbd "<C-c> <C-t>") 'hterm)
-;; ;; (global-set-key (kbd "C-c C-t") 'vterm) ;; disabled because C-c C-t is vterm-copy-mode inside of a vterm
+(add-hook 'vterm-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-l")) ; Since C-l does not preserve scrollback, disable it
+            (local-unset-key (kbd "C-S-h")) ; No need to send this to term, it's my help key
+            ;; Need this to kill the nano opened by vterm when using git
+            (local-set-key (kbd "C-c C-x RET") (lambda () (vterm-send (kbd "C-x"))))
+            (local-set-key (kbd "C-k") 'vterm-kill)
+            (unbind-c-a-in-vterm)))
 
 (global-set-key (kbd "C-c C-s") 'hgmacs-open-scratch-file)
 

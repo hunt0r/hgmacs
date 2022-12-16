@@ -19,6 +19,8 @@
  '(shift-select-mode nil)
  '(smooth-scroll/hscroll-step-size 1)
  '(smooth-scroll/vscroll-step-size 1)
+ '(sp-escape-quotes-after-insert nil)
+ '(sp-hybrid-kill-excessive-whitespace t)
  '(uniquify-buffer-name-style 'post-forward-angle-brackets nil (uniquify)))
 
 (custom-set-faces

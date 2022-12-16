@@ -50,3 +50,30 @@ For example, return 0 if no buffer starts with base-string0.
   (cond (subword-mode (superword-mode +1))
         (superword-mode (superword-mode -1))
         (t (subword-mode +1))))
+
+(defun degrees (angle)
+  "Convert ANGLE to degrees (from radians)"
+  (* (/ angle float-pi) 180.0))
+
+(defun radians (angle)
+  "Convert ANGLE to radians (from degrees)"
+  (* (/ angle 180.0) float-pi))
+
+(defun percent-error-small-angle (angle-deg)
+  "Return small-angle error of ANGLE-DEG from sin and cos approx as percentage"
+  (let* ((ang (radians angle-deg))
+         (sin-ang (sin ang))
+         (cos-ang (cos ang)))
+    `(,(* 100 (abs (/ (- sin-ang ang) sin-ang))) ,(* 100 (abs (/ (- cos-ang 1) cos-ang))))))
+
+;; (percent-error-small-angle 10) ; (0.5095 1.543)
+
+(defun interp (xx yy x)
+  "Return linear interpolation of X between two points with x-coord XX and y-coord YY."
+  (let* ((xx0 (car xx))
+         (xx1 (cadr xx))
+         (yy0 (car yy))
+         (yy1 (cadr yy))
+         (dx-norm (/ (- x xx0) (- xx1 xx0)))
+         (dy (- yy1 yy0)))
+    (+ yy0 (* dx-norm dy))))
