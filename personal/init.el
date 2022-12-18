@@ -13,7 +13,11 @@
 (setq scroll-conservatively 0)
 (setq scroll-preserve-screen-position nil)
 (setq scroll-error-top-bottom t)
+(setq next-screen-context-lines 1)
 (defalias 'sp-strict 'smartparens-strict-mode)
+(setq sp-escape-quotes-after-insert nil)
+(setq sp-hybrid-kill-excessive-whitespace t)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
@@ -23,6 +27,12 @@
 (add-hook 'python-mode-hook (lambda () (setq fill-column hgmacs-column-size)))
 ;; You might also set the default fill column to hgmacs-column-size.
 ;; (setq-default fill-column hgmacs-column-size)
+
+(setq delete-by-moving-to-trash t)
+(setq dired-listing-switches "-alh")
+(setq list-directory-verbose-switches "-lh")
+(setq sentence-end-double-space nil)
+(setq shift-select-mode nil)
 
 ;; Don't want line numbers (user can get them from mode line, see also screenshare-mode)
 (if (fboundp 'global-display-line-numbers-mode)
@@ -38,6 +48,7 @@
 (global-unset-key (kbd "C-\\")) ;; used to change input method (multi-lingual)
 (global-unset-key (kbd "C-z"))  ;; suspend-frame
 (global-unset-key (kbd "M-m"))  ;; C-a toggles btwn line-start / text-start
+(global-unset-key (kbd "M-\\")) ;; cycle-spacing twice does this
 ;; I prefer term-like C-h, and use C-S-h to start help
 (global-set-key (kbd "C-S-h") 'help-command)
 (global-set-key (kbd "C-h") 'backward-kill-word)
@@ -49,6 +60,8 @@
 ;; Create screenshare-mode
 (prelude-require-package 'smooth-scroll)
 (require 'smooth-scroll)
+(setq smooth-scroll/hscroll-step-size 1)
+(setq smooth-scroll/vscroll-step-size 1)
 (easy-mmode-define-minor-mode screenshare-local-mode
   "Toggle (local) screenshare minor mode on or off. It is useful when sharing my emacs screen."
   :lighter " ScrnShr"
@@ -82,6 +95,7 @@
 (global-set-key (kbd "C-x o") 'ace-window)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
+(setq aw-dispatch-always t)
 ;; Make this also work in org-mode and magit
 (add-hook 'org-mode-hook
        (lambda()
@@ -141,6 +155,21 @@
             (unbind-c-a-in-vterm)))
 
 (global-set-key (kbd "C-c C-s") 'hgmacs-open-scratch-file)
+
+(setq bibtex-autokey-year-length 4)
+(setq bibtex-autokey-year-title-separator "")
+(setq bibtex-entry-format '(opts-or-alts
+                            required-fields
+                            numerical-fields
+                            whitespace
+                            realign
+                            last-comma
+                            delimiters
+                            unify-case
+                            braces
+                            strings
+                            sort-fields))
+(setq bibtex-maintain-sorted-entries 'crossref)
 
 ;; TODO setup dbt mode
 ;; (straight-use-package '(dbt-mode
