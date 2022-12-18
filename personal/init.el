@@ -41,6 +41,7 @@
 ;; I prefer term-like C-h, and use C-S-h to start help
 (global-set-key (kbd "C-S-h") 'help-command)
 (global-set-key (kbd "C-h") 'backward-kill-word)
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
 
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
@@ -185,9 +186,6 @@
 ;;       `((comment-continuation 0)
 ;;         ,@hgm-sql-indent-offset-alists))
 ;; (setq hgm-sql-indent-offset-alists (delete '(with-clause 0) hgm-sql-indent-offset-alists))
-
-;; TODO why does cycle-spacing not act as advertised?
-;; (global-set-key (kbd "M-<spc>") 'cycle-spacing)
 
 ;; TODO crux-move-beginning-of-line to also dwim with commented lines (treat comment delim as whitespace)
 
