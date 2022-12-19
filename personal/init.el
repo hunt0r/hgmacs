@@ -16,8 +16,11 @@
 (setq next-screen-context-lines 1)
 (defalias 'sp-strict 'smartparens-strict-mode)
 (setq sp-escape-quotes-after-insert nil)
-(setq sp-hybrid-kill-excessive-whitespace t)
+;; Setting this to t is too aggressive... is there a lighter version?
+;; I don't like that if I kill the remainder of a line, it wraps the next line up to previous
+(setq sp-hybrid-kill-excessive-whitespace nil)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(define-key prelude-mode-map (kbd "C-a") 'hgmacs-move-beginning-of-line)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
@@ -215,8 +218,6 @@
 ;;       `((comment-continuation 0)
 ;;         ,@hgm-sql-indent-offset-alists))
 ;; (setq hgm-sql-indent-offset-alists (delete '(with-clause 0) hgm-sql-indent-offset-alists))
-
-;; TODO crux-move-beginning-of-line to also dwim with commented lines (treat comment delim as whitespace)
 
 ;; TODO When I list key bindings, I want them ordered differently.
 

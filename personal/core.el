@@ -44,6 +44,48 @@ For example, return 0 if no buffer starts with base-string0.
   (interactive)
   (find-file org-default-notes-file))
 
+
+(defun hgmacs-get-line-stops ()
+  "Return stop spots of the current line
+
+Some 'stop spots':
+1) the actual line beginning
+2) the start of any non-whitespace (could be a comment delimiter)
+3) the start of the meaningful text (e.g. comment body)"
+  (save-excursion
+    (let ((stops ())
+          (bol (progn (move-beginning-of-line nil) (point)))
+          (crux-start (progn (crux-move-to-mode-line-start) (point)))
+          (beginning-of-comment (progn (looking-at comment-start-skip) (goto-char (match-end 0)))))
+      (push bol stops)
+      (cl-pushnew crux-start stops)
+      (cl-pushnew beginning-of-comment stops)
+      (reverse stops))))
+
+(defun hgmacs-move-back-to-prev-stop ()
+  "Move to the nearest stop before current point."
+  (let ((stops (hgmacs-get-line-stops))
+        (start-point (point))
+        (final-point 0))
+    (while (and (< final-point start-point) stops)
+      (setq final-point (pop stops))
+      (if (< final-point start-point) (goto-char final-point)))))
+
+(defun hgmacs-move-to-final-stop ()
+  "Move to the furthest-in-buffer stop."
+  (goto-char (apply 'max (hgmacs-get-line-stops))))
+
+
+(defun hgmacs-move-beginning-of-line ()
+  "Move point to line start, which can mean various things.
+
+This will toggle between these with repeated presses.
+It is an extension of crux-move-beginning-of-line that does what I want for comments."
+  (interactive)
+  (let ((orig-point (point)))
+    (hgmacs-move-back-to-prev-stop)
+    (when (= orig-point (point)) (hgmacs-move-to-final-stop))))
+
 (defun toggle-subword-normal-superword-mode ()
   "Toggle (subword -> superword -> normal -> subword -> ...) modes"
   (interactive)
