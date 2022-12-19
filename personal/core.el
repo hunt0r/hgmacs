@@ -56,7 +56,7 @@ Some 'stop spots':
     (let ((stops ())
           (bol (progn (move-beginning-of-line nil) (point)))
           (crux-start (progn (crux-move-to-mode-line-start) (point)))
-          (beginning-of-comment (progn (looking-at comment-start-skip) (goto-char (match-end 0)))))
+          (beginning-of-comment (progn (looking-at (or comment-start-skip "")) (goto-char (match-end 0)))))
       (push bol stops)
       (cl-pushnew crux-start stops)
       (cl-pushnew beginning-of-comment stops)
