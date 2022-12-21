@@ -22,17 +22,23 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (define-key prelude-mode-map (kbd "C-a") 'hgmacs-move-beginning-of-line)
 ;; Because I like end-of-line cleanup of whitespace, but don't want that when I just switch away,
-;; disable super-save-mode.
+;; disable super-save-mode (which saves on switch-away)
 (super-save-mode -1)
+;; Much elisp code has tabs, this doesn't bother me
+(defun remove-tabs-from-whitespace-active-style ()
+  (make-local-variable 'whitespace-active-style)
+  (delq 'tabs whitespace-active-style))
+(add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
 (setq auth-source-save-behavior nil)
 
-(add-hook 'c++-mode-hook (lambda () (setq fill-column hgmacs-column-size)))
-(add-hook 'python-mode-hook (lambda () (setq fill-column hgmacs-column-size)))
-;; You might also set the default fill column to hgmacs-column-size.
-;; (setq-default fill-column hgmacs-column-size)
+(defun set-hgmacs-fill-column-size ()
+  "Note that fill-column is special in that it makes itself local on set."
+  (setq fill-column hgmacs-column-size))
+(add-hook 'c++-mode-hook 'set-hgmacs-fill-column-size)
+(add-hook 'python-mode-hook 'set-hgmacs-fill-column-size)
 
 (setq delete-by-moving-to-trash t)
 (setq dired-listing-switches "-alh")
@@ -103,15 +109,18 @@
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
 (setq aw-dispatch-always t)
-;; Make this also work in org-mode and magit
-(add-hook 'org-mode-hook
-       (lambda()
-         (local-set-key (kbd "<C-M-tab>") 'org-force-cycle-archived)
-         (local-unset-key (kbd "<C-tab>"))))
-(add-hook 'magit-mode-hook
-          (lambda()
-            (local-set-key (kbd "<C-M-tab>") 'magit-section-cycle)
-            (local-unset-key (kbd "<C-tab>"))))
+;; Make this also work in magit
+(defun hgmacs-fix-C-tab-in-magit ()
+  (when (lookup-key magit-mode-map (kbd "C-<tab>"))
+    (let ((binding-to-stomp (lookup-key magit-mode-map (kbd "C-M-<tab>")))
+          (binding-to-transfer (lookup-key magit-mode-map (kbd "C-<tab>"))))
+      (unless (or (not binding-to-stomp)
+                  (equal binding-to-stomp binding-to-transfer))
+        (message "Magit mode: losing C-M-<tab>'s binding to %s" binding-to-stomp))
+      (define-key magit-mode-map (kbd "<C-M-tab>") binding-to-transfer)
+      (define-key magit-mode-map (kbd "<C-tab>") nil))))
+(add-hook 'magit-mode-hook 'hgmacs-fix-C-tab-in-magit)
+
 
 (prelude-require-package 'with-editor)
 (require 'with-editor)
@@ -152,14 +161,15 @@
     (copy-region-as-kill (mark) (point)))
   (vterm-send (kbd "C-k")))
 
-(add-hook 'vterm-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-l")) ; Since C-l does not preserve scrollback, disable it
-            (local-unset-key (kbd "C-S-h")) ; No need to send this to term, it's my help key
-            ;; Need this to kill the nano opened by vterm when using git
-            (local-set-key (kbd "C-c C-x RET") (lambda () (vterm-send (kbd "C-x"))))
-            (local-set-key (kbd "C-k") 'vterm-kill)
-            (unbind-c-a-in-vterm)))
+(defun hgmacs-fix-vterm-bindings ()
+  "Set vterm key bindings as desired."
+  (local-unset-key (kbd "C-l")) ; Since C-l does not preserve scrollback, disable it
+  (local-unset-key (kbd "C-S-h")) ; No need to send this to term, it's my help key
+  ;; Need this to kill the nano opened by vterm when using git
+  (local-set-key (kbd "C-c C-x RET") (lambda () (vterm-send (kbd "C-x"))))
+  (local-set-key (kbd "C-k") 'vterm-kill)
+  (unbind-c-a-in-vterm))
+(add-hook 'vterm-mode-hook 'hgmacs-fix-vterm-bindings)
 
 (global-set-key (kbd "C-c C-s") 'hgmacs-open-scratch-file)
 
@@ -178,7 +188,6 @@
                             sort-fields))
 (setq bibtex-maintain-sorted-entries 'crossref)
 
-;; TODO Don't highlight tabs in elisp mode (elisp uses them often and I don't mind)
 ;; TODO global zooming for C-x +/-/0 (pass arg for local?)
 ;; TODO When I list key bindings, I want them ordered differently.
 
@@ -226,11 +235,12 @@
 ;;     (comment-continuation 0)
 ;;     ,@sqlind-default-indentation-offsets-alist))
 
-;; (add-hook 'sqlind-minor-mode-hook
-;;           (lambda ()
-;;             (setq sqlind-basic-offset 4)
-;;             (setq sqlind-indentation-offsets-alist
-;;                   hgm-sql-indent-offset-alists)))
+;; (defun hmacs-sqlind-changes ()
+;;   "Set sqlind as desired."
+;;   (setq sqlind-basic-offset 4)
+;;   (setq sqlind-indentation-offsets-alist
+;;         hgm-sql-indent-offset-alists))
+;; (add-hook 'sqlind-minor-mode-hook 'xyz)
 
 ;; Useful code snippets in determining what I like above.
 ;; I have not yet figured out how to make "temporary" changes to the settings
