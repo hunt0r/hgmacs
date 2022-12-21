@@ -60,6 +60,9 @@ Some 'stop spots':
       (push bol stops)
       (cl-pushnew crux-start stops)
       (cl-pushnew beginning-of-comment stops)
+      ;; TODO add Org-mode outline prefixes (e.g. single-star, double-star, etc)
+      ;;     Org mode has its own implementation, but I don't think it works for "normal" lines with spaces at start.
+      ;;     I think org-special-c-a/c-e as t or reversed is what I want, but to extend this for "normal" lines.
       (reverse stops))))
 
 (defun hgmacs-move-back-to-prev-stop ()

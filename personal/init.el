@@ -21,6 +21,9 @@
 (setq sp-hybrid-kill-excessive-whitespace nil)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (define-key prelude-mode-map (kbd "C-a") 'hgmacs-move-beginning-of-line)
+;; Because I like end-of-line cleanup of whitespace, but don't want that when I just switch away,
+;; disable super-save-mode.
+(super-save-mode -1)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
@@ -89,6 +92,7 @@
 ;; Open ASL files in python-mode for syntax highlighting
 (add-to-list 'auto-mode-alist '("\\.asl" . python-mode))
 (add-to-list 'auto-mode-alist '("BUILD" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.sadl" . python-mode))
 
 ;; Enable clipboard
 (setq x-select-enable-clipboard t)
@@ -174,6 +178,29 @@
                             sort-fields))
 (setq bibtex-maintain-sorted-entries 'crossref)
 
+;; TODO Don't highlight tabs in elisp mode (elisp uses them often and I don't mind)
+;; TODO global zooming for C-x +/-/0 (pass arg for local?)
+;; TODO When I list key bindings, I want them ordered differently.
+
+;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
+
+;; TODO only want hl-line-mode in the *active* window
+
+;; TODO Learn about projectile
+;; TODO Learn about avy
+;; TODO Learn about anzu
+;; TODO Learn about undo-tree
+;; TODO Learn to use all the modules in prelude-modules
+
+;; TODO add any tips to prelude-tips?
+
+;; TODO bug in highlighting newlines:
+;; when I add several newlines to bottom of file, they are (correctly) highlighted
+;; but when I add content to the final one, the others are no longer 'trailing'.
+;; But their highlighting does not disappear.
+
+;; TODO check out Brendan Miller's https://github.com/catphive/emacs
+
 ;; TODO setup dbt mode
 ;; (straight-use-package '(dbt-mode
 ;;                         :type git
@@ -218,24 +245,3 @@
 ;;       `((comment-continuation 0)
 ;;         ,@hgm-sql-indent-offset-alists))
 ;; (setq hgm-sql-indent-offset-alists (delete '(with-clause 0) hgm-sql-indent-offset-alists))
-
-;; TODO When I list key bindings, I want them ordered differently.
-
-;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
-
-;; TODO only want hl-line-mode in the *active* window
-
-;; TODO Learn about projectile
-;; TODO Learn about avy
-;; TODO Learn about anzu
-;; TODO Learn about undo-tree
-;; TODO Learn to use all the modules in prelude-modules
-
-;; TODO add any tips to prelude-tips?
-
-;; TODO bug in highlighting newlines:
-;; when I add several newlines to bottom of file, they are (correctly) highlighted
-;; but when I add content to the final one, the others are no longer 'trailing'.
-;; But their highlighting does not disappear.
-
-;; TODO check out Brendan Miller's https://github.com/catphive/emacs
