@@ -191,12 +191,6 @@
 (prelude-require-package 'default-text-scale)
 (default-text-scale-mode +1)
 
-;; TODO When I list key bindings, I want them ordered differently.
-
-;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
-
-;; TODO only want hl-line-mode in the *active* window
-
 ;; TODO Learn about projectile
 ;; TODO Learn about avy
 ;; TODO Learn about anzu
@@ -212,7 +206,9 @@
 
 ;; TODO check out Brendan Miller's https://github.com/catphive/emacs
 
-;; TODO setup dbt mode
+;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
+
+;; Configure dbt mode and sql-indent?
 ;; (straight-use-package '(dbt-mode
 ;;                         :type git
 ;;                         :host github
@@ -221,8 +217,6 @@
 ;;                         :custom (sql-product 'ansi)))
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . dbt-mode))
 
-
-;; TODO setup sql-indent (and work on it!)
 ;; (straight-use-package 'sql-indent)
 ;; (require 'sql-indent)
 
