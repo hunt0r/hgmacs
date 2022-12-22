@@ -188,7 +188,9 @@
                             sort-fields))
 (setq bibtex-maintain-sorted-entries 'crossref)
 
-;; TODO global zooming for C-x +/-/0 (pass arg for local?)
+(prelude-require-package 'default-text-scale)
+(default-text-scale-mode +1)
+
 ;; TODO When I list key bindings, I want them ordered differently.
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
