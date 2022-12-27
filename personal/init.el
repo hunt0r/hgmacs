@@ -29,6 +29,7 @@
   (make-local-variable 'whitespace-active-style)
   (delq 'tabs whitespace-active-style))
 (add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
+(setq company-minimum-prefix-length 3)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
@@ -191,11 +192,20 @@
 (prelude-require-package 'default-text-scale)
 (default-text-scale-mode +1)
 
-;; TODO Learn about projectile
-;; TODO Learn about avy
-;; TODO Learn about anzu
-;; TODO Learn about undo-tree
-;; TODO Learn to use all the modules in prelude-modules
+(add-to-list 'avy-keys ?\; t)
+(setq avy-keys (delq ?h avy-keys))
+(setq avy-keys (delq ?g avy-keys))
+
+
+;;; Want C-s and C-r to work like isearch, except using ivy always
+(prelude-require-package 'swiper)
+(require 'swiper)
+(global-set-key (kbd "C-s") 'swiper-isearch)
+(global-set-key (kbd "C-r") 'swiper-isearch-backward)
+;; swiper ideas:
+;; Repeated C-s should never match backward. (Sometimes starts from last search end, not point.)
+;; Same for repeated C-r.
+
 
 ;; TODO add any tips to prelude-tips?
 
