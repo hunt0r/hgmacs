@@ -190,7 +190,7 @@
 (setq bibtex-maintain-sorted-entries 'crossref)
 
 ;; Overwrite text-scale-adjust commands with global versions
-(prelude-require-package 'default-text-scale)
+(prelude-require-packages '(hydra default-text-scale))
 (default-text-scale-mode +1)
 (define-key default-text-scale-mode-map (kbd "C-M-=") nil)
 (define-key default-text-scale-mode-map (kbd "C-M--") nil)
@@ -199,13 +199,18 @@
 (define-key default-text-scale-mode-map (kbd "ESC") nil)
 (setq default-text-scale-mode-map (delete '(27) default-text-scale-mode-map))
 ;; Add the commands that I want
-(define-key default-text-scale-mode-map (kbd "C-x C-+") 'default-text-scale-increase)
-(define-key default-text-scale-mode-map (kbd "C-x C-=") 'default-text-scale-increase)
-(define-key default-text-scale-mode-map (kbd "C-x C--") 'default-text-scale-decrease)
-(define-key default-text-scale-mode-map (kbd "C-x C-_") 'default-text-scale-decrease)
-(define-key default-text-scale-mode-map (kbd "C-x C-0") 'default-text-scale-reset)
-;; TODO get these to work with repeated press mode
-;; (Does default-text-scale already have this? If not, I can adapt from text-scale-adjust OR hydra.)
+(defhydra hydra-zoom () "Repeat +/-/0 to zoom in/out/reset"
+  ("C-+" default-text-scale-increase)
+  ("C--" default-text-scale-decrease)
+  ("C-0" default-text-scale-reset)
+  ("C-=" default-text-scale-increase)
+  ("C-_" default-text-scale-decrease))
+
+(define-key default-text-scale-mode-map (kbd "C-x C-+") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C-=") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C--") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C-_") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C-0") 'hydra-zoom/body)
 
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
@@ -221,6 +226,9 @@
 ;; Same for repeated C-r.
 (global-set-key (kbd "M-s s") 'isearch-forward) ; (Often overshadowed by smartparens)
 (global-set-key (kbd "M-s r") 'isearch-backward) ; (Often overshadowed by smartparens)
+
+;; TODO I found the control problem.
+;; Press Rctrl and hold. Press Lctrl and hold. Release Rctrl. (This *releases* ctrl!) Type k expecting C-k but get k.
 
 ;; TODO bug in highlighting newlines:
 ;; when I add several newlines to bottom of file, they are (correctly) highlighted
