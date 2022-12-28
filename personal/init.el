@@ -27,7 +27,7 @@
 ;; Much elisp code has tabs, this doesn't bother me
 (defun remove-tabs-from-whitespace-active-style ()
   (make-local-variable 'whitespace-active-style)
-  (delq 'tabs whitespace-active-style))
+  (setq whitespace-active-style (delq 'tabs whitespace-active-style)))
 (add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
 (setq company-minimum-prefix-length 3)
 
@@ -189,13 +189,27 @@
                             sort-fields))
 (setq bibtex-maintain-sorted-entries 'crossref)
 
+;; Overwrite text-scale-adjust commands with global versions
 (prelude-require-package 'default-text-scale)
 (default-text-scale-mode +1)
+(define-key default-text-scale-mode-map (kbd "C-M-=") nil)
+(define-key default-text-scale-mode-map (kbd "C-M--") nil)
+(define-key default-text-scale-mode-map (kbd "C-M-0") nil)
+;; I don't know why these were in here, removing them just in case
+(define-key default-text-scale-mode-map (kbd "ESC") nil)
+(setq default-text-scale-mode-map (delete '(27) default-text-scale-mode-map))
+;; Add the commands that I want
+(define-key default-text-scale-mode-map (kbd "C-x C-+") 'default-text-scale-increase)
+(define-key default-text-scale-mode-map (kbd "C-x C-=") 'default-text-scale-increase)
+(define-key default-text-scale-mode-map (kbd "C-x C--") 'default-text-scale-decrease)
+(define-key default-text-scale-mode-map (kbd "C-x C-_") 'default-text-scale-decrease)
+(define-key default-text-scale-mode-map (kbd "C-x C-0") 'default-text-scale-reset)
+;; TODO get these to work with repeated press mode
+;; (Does default-text-scale already have this? If not, I can adapt from text-scale-adjust OR hydra.)
 
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
 (setq avy-keys (delq ?g avy-keys))
-
 
 ;;; Want C-s and C-r to work like isearch, except using ivy always
 (prelude-require-package 'swiper)
@@ -205,9 +219,8 @@
 ;; swiper ideas:
 ;; Repeated C-s should never match backward. (Sometimes starts from last search end, not point.)
 ;; Same for repeated C-r.
-
-
-;; TODO add any tips to prelude-tips?
+(global-set-key (kbd "M-s s") 'isearch-forward) ; (Often overshadowed by smartparens)
+(global-set-key (kbd "M-s r") 'isearch-backward) ; (Often overshadowed by smartparens)
 
 ;; TODO bug in highlighting newlines:
 ;; when I add several newlines to bottom of file, they are (correctly) highlighted
@@ -217,6 +230,7 @@
 ;; TODO check out Brendan Miller's https://github.com/catphive/emacs
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
+;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
 
 ;; Configure dbt mode and sql-indent?
 ;; (straight-use-package '(dbt-mode
