@@ -24,8 +24,9 @@
 ;; Because I like end-of-line cleanup of whitespace, but don't want that when I just switch away,
 ;; disable super-save-mode (which saves on switch-away)
 (super-save-mode -1)
-;; Much elisp code has tabs, this doesn't bother me
+;; Much elisp code has tabs, this doesn't bother me, so don't highlight them
 (defun remove-tabs-from-whitespace-active-style ()
+  "Used to prevent tab-highlighting in some modes (e.g. elisp)"
   (make-local-variable 'whitespace-active-style)
   (setq whitespace-active-style (delq 'tabs whitespace-active-style)))
 (add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
@@ -227,13 +228,7 @@
 (global-set-key (kbd "M-s s") 'isearch-forward) ; (Often overshadowed by smartparens)
 (global-set-key (kbd "M-s r") 'isearch-backward) ; (Often overshadowed by smartparens)
 
-;; TODO I found the control problem.
-;; Press Rctrl and hold. Press Lctrl and hold. Release Rctrl. (This *releases* ctrl!) Type k expecting C-k but get k.
-
-;; TODO bug in highlighting newlines:
-;; when I add several newlines to bottom of file, they are (correctly) highlighted
-;; but when I add content to the final one, the others are no longer 'trailing'.
-;; But their highlighting does not disappear.
+;; TODO Is active mode line background full-black? I think not
 
 ;; TODO check out Brendan Miller's https://github.com/catphive/emacs
 
