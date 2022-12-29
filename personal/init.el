@@ -228,7 +228,7 @@
 (global-set-key (kbd "M-s s") 'isearch-forward) ; (Often overshadowed by smartparens)
 (global-set-key (kbd "M-s r") 'isearch-backward) ; (Often overshadowed by smartparens)
 
-;; TODO Is active mode line background full-black? I think not
+(set-face-background 'mode-line "gray8")
 
 ;; TODO check out Brendan Miller's https://github.com/catphive/emacs
 
