@@ -230,7 +230,7 @@
 
 (set-face-background 'mode-line "gray8")
 
-;; TODO check out Brendan Miller's https://github.com/catphive/emacs
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
