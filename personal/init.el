@@ -48,7 +48,7 @@
 (setq sentence-end-double-space nil)
 (setq shift-select-mode nil)
 
-;; Don't want line numbers (user can get them from mode line, see also screenshare-mode)
+;; Don't want line numbers by default
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode -1)
   (global-nlinum-mode -1))
@@ -108,6 +108,7 @@
 ;; Use C-<tab> / C-S-<tab> for quick switching between windows, C-x o for accurate switch
 (global-set-key [remap other-window] nil)
 (global-set-key (kbd "C-x o") 'ace-window)
+(global-set-key (kbd "C-x 4 C-k") 'ace-delete-window)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
 (setq aw-dispatch-always t)
@@ -231,6 +232,18 @@
 (set-face-background 'mode-line "gray8")
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+
+;; When running lgrep or rgrep, I don't want ivy to directory-match at 2nd stage (for pattern).
+;; This is a simple disabler of that.
+(defun dont-ivy-on-grep-read-files (grf-original &rest args)
+  "Don't let grep-read-files use ivy-completing-read"
+  (let ((completing-read-function
+         (if (equal completing-read-function #'ivy-completing-read) ivy--old-crf completing-read-function)))
+    (apply grf-original args)))
+(advice-add 'grep-read-files :around #'dont-ivy-on-grep-read-files)
+;; TODO Could I have ivy list out the available aliases from grep-file-aliases
+
+;; TODO when I start a terminal in a TRAMP buffer, simply failing is wrong thing to do.
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
