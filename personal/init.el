@@ -108,16 +108,15 @@
 ;; Use C-<tab> / C-S-<tab> for quick switching between windows, C-x o for accurate switch
 (global-set-key [remap other-window] nil)
 (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\; ?g ?h))
-;; TODO improve this face to be even brighter (red background, white foreground?)
-;; Also consider mod to ace-window that if point is in upper-left, where letter appears, do something smart like hide it
-(custom-set-faces '(aw-leading-char-face ((((class color)) (:foreground "red"))
+(custom-set-faces '(aw-leading-char-face ((((class color)) (:foreground "white" :background "red"))
                                           (((background dark)) (:foreground "gray100"))
                                           (((background light)) (:foreground "gray0"))
                                           (t (:foreground "gray100" :underline nil)))
                                          nil
                                          "Undo zenburn customization"))
-;; I wish it was a giant overlay. Maybe every corner and side of buffer would work too?
-;; I'm worried about the times (e.g. info buffers) when the label isn't visible.
+(setq aw-char-position 'left)
+;; Idea: Modify ace-window s.t. it can display multiple chars (as the comment says)
+;; Also consider mod to ace-window that if point is in same pos as letter, do something smart like hide point
 (global-set-key (kbd "C-x o") 'ace-window) ; Remember C-u = swap, C-u C-u = delete
 (global-set-key (kbd "C-x 4 C-k") 'ace-delete-window) ; (may remove in favor of C-u C-u C-x o)
 (global-set-key (kbd "<C-tab>") 'other-window)
