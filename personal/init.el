@@ -107,9 +107,21 @@
 
 ;; Use C-<tab> / C-S-<tab> for quick switching between windows, C-x o for accurate switch
 (global-set-key [remap other-window] nil)
-(global-set-key (kbd "C-x o") 'ace-window)
-(global-set-key (kbd "C-x 4 C-k") 'ace-delete-window)
+(setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\; ?g ?h))
+;; TODO improve this face to be even brighter (red background, white foreground?)
+;; Also consider mod to ace-window that if point is in upper-left, where letter appears, do something smart like hide it
+(custom-set-faces '(aw-leading-char-face ((((class color)) (:foreground "red"))
+                                          (((background dark)) (:foreground "gray100"))
+                                          (((background light)) (:foreground "gray0"))
+                                          (t (:foreground "gray100" :underline nil)))
+                                         nil
+                                         "Undo zenburn customization"))
+;; I wish it was a giant overlay. Maybe every corner and side of buffer would work too?
+;; I'm worried about the times (e.g. info buffers) when the label isn't visible.
+(global-set-key (kbd "C-x o") 'ace-window) ; Remember C-u = swap, C-u C-u = delete
+(global-set-key (kbd "C-x 4 C-k") 'ace-delete-window) ; (may remove in favor of C-u C-u C-x o)
 (global-set-key (kbd "<C-tab>") 'other-window)
+(global-set-key (kbd "C-x 4 C-x") 'aw-show-dispatch-help)
 (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
 (setq aw-dispatch-always t)
 ;; Make this also work in magit
@@ -217,6 +229,9 @@
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
 (setq avy-keys (delq ?g avy-keys))
+;; Idea: does avy have functionality to accept multiple chars, then jump after a small pause?
+;; This is like somewhat-fuzzy.
+;; Example: say I want to jump to "class". I could jump with "c" and get a bunch. But "cla" should be a rarer match.
 
 ;;; Want C-s and C-r to work like isearch, except using ivy always
 (prelude-require-package 'swiper)
