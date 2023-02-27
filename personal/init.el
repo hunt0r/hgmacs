@@ -6,7 +6,9 @@
 
 ;; Adapt some Prelude settings to my liking
 (setq hgmacs-column-size 120)
-(volatile-highlights-mode -1)
+;; (volatile-highlights-mode -1) ;; TODO should I leave this disabled?
+(global-hl-line-mode -1) ; Messes with face coloring on the current line, not useful enough
+(projectile-mode nil)
 (ad-deactivate 'exchange-point-and-mark)
 (setq whitespace-line-column hgmacs-column-size)
 (when (eq system-type 'darwin) (setq ns-function-modifier 'none))
@@ -31,6 +33,8 @@
   (setq whitespace-active-style (delq 'tabs whitespace-active-style)))
 (add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
 (setq company-minimum-prefix-length 3)
+(key-chord-unset-global "xx")
+(delete "Press <xx> quickly to execute extended command." key-chord-tips)
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
@@ -108,13 +112,13 @@
 ;; Use C-<tab> / C-S-<tab> for quick switching between windows, C-x o for accurate switch
 (global-set-key [remap other-window] nil)
 (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\; ?g ?h))
-(custom-set-faces '(aw-leading-char-face ((((class color)) (:foreground "white" :background "red"))
+(custom-set-faces '(aw-leading-char-face ((default (:height 3.0 :inherit ace-jump-face-foreground))
+                                          (((class color)) (:foreground "white" :background "red"))
                                           (((background dark)) (:foreground "gray100"))
                                           (((background light)) (:foreground "gray0"))
                                           (t (:foreground "gray100" :underline nil)))
                                          nil
                                          "Undo zenburn customization"))
-(setq aw-char-position 'left)
 ;; Idea: Modify ace-window s.t. it can display multiple chars (as the comment says)
 ;; Also consider mod to ace-window that if point is in same pos as letter, do something smart like hide point
 (global-set-key (kbd "C-x o") 'ace-window) ; Remember C-u = swap, C-u C-u = delete
@@ -205,6 +209,7 @@
 ;; Overwrite text-scale-adjust commands with global versions
 (prelude-require-packages '(hydra default-text-scale))
 (default-text-scale-mode +1)
+(global-set-key (kbd "C--") 'negative-argument)
 (define-key default-text-scale-mode-map (kbd "C-M-=") nil)
 (define-key default-text-scale-mode-map (kbd "C-M--") nil)
 (define-key default-text-scale-mode-map (kbd "C-M-0") nil)
@@ -247,6 +252,27 @@
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
+(prelude-require-packages '(lsp-mode lsp-ui google-c-style latex-math-preview math-preview ein))
+
+(setq-default ein:output-area-inlined-images t) ;; if you want plots printed inline with notebook
+;;(setq ein:output-area-inlined-images nil) ;; if you want them exported to app (configured in mailcap-user-mime-data)
+;;(setq math-preview--debug-json t) ;; to debug math-preview output
+
+(defun hgmacs-ein-bindings ()
+  "Modify bindings as I like in ein notebooks"
+  (define-key ein:notebook-mode-map (kbd "C-c C-x C-e") 'ein:worksheet-execute-all-cells)
+  (define-key ein:notebook-mode-map (kbd "C-c C-x C-a") 'ein:worksheet-execute-all-cells-above)
+  (define-key ein:notebook-mode-map (kbd "C-c C-x C-b") 'ein:worksheet-execute-all-cells-below))
+
+(add-hook 'ein:notebook-mode-hook 'hgmacs-ein-bindings)
+;; TODO figure out how to default to this in the prompt
+(setq hgmacs-ein-default-link "http://explorer:8888")
+
+(add-to-list 'grep-files-aliases'("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl"))
+(add-to-list 'grep-files-aliases'("bzl" . "BUILD *.bzl"))
+(add-to-list 'grep-files-aliases'("python" . "*.py *.ipynb"))
+;; Wonder if I will ever want combinations of these... cpp+bzl, py+bzl, etc.
+
 ;; When running lgrep or rgrep, I don't want ivy to directory-match at 2nd stage (for pattern).
 ;; This is a simple disabler of that.
 (defun dont-ivy-on-grep-read-files (grf-original &rest args)
@@ -255,7 +281,16 @@
          (if (equal completing-read-function #'ivy-completing-read) ivy--old-crf completing-read-function)))
     (apply grf-original args)))
 (advice-add 'grep-read-files :around #'dont-ivy-on-grep-read-files)
-;; TODO Could I have ivy list out the available aliases from grep-file-aliases
+;; Idea: Could I have ivy list out the available aliases from grep-file-aliases?
+;; Did some digging: grep calls completing-read with #'read-file-name-internal as COLLECTION.
+;; So I would need to either modify grep (which I don't love), or hijack read-file-name-internal and make it DWIW.
+;; I don't love mucking about in something so deep (only want it to use grep-files-aliases in this one case) so
+;; I am procrastinating as I think about a better solution.
+;; My BATNA is good: Just don't have it say anything
+
+;; Recommended by https://github.com/bbatsov/projectile/issues/1232
+(defadvice projectile-project-root (around ignore-remote first activate)
+  (unless (file-remote-p default-directory) ad-do-it))
 
 ;; TODO when I start a terminal in a TRAMP buffer, simply failing is wrong thing to do.
 
