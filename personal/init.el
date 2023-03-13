@@ -81,10 +81,10 @@
 (setq smooth-scroll/hscroll-step-size 1)
 (setq smooth-scroll/vscroll-step-size 1)
 (easy-mmode-define-minor-mode screenshare-local-mode
-  "Toggle (local) screenshare minor mode on or off. It is useful when sharing my emacs screen."
-  :lighter " ScrnShr"
-  (if screenshare-local-mode (hl-line-mode +1) (hl-line-mode -1))
-  (if screenshare-local-mode (smooth-scroll-mode +1) (smooth-scroll-mode -1)))
+                              "Toggle (local) screenshare minor mode on or off. It is useful when sharing my emacs screen."
+                              :lighter " ScrnShr"
+                              (if screenshare-local-mode (hl-line-mode +1) (hl-line-mode -1))
+                              (if screenshare-local-mode (smooth-scroll-mode +1) (smooth-scroll-mode -1)))
 
 (define-globalized-minor-mode screenshare-mode
   screenshare-local-mode
@@ -122,7 +122,7 @@
 ;; Idea: Modify ace-window s.t. it can display multiple chars (as the comment says)
 ;; Also consider mod to ace-window that if point is in same pos as letter, do something smart like hide point
 (global-set-key (kbd "C-x o") 'ace-window) ; Remember C-u = swap, C-u C-u = delete
-(global-set-key (kbd "C-x 4 C-k") 'ace-delete-window) ; (may remove in favor of C-u C-u C-x o)
+(global-set-key (kbd "C-x 4 0") (lambda () (interactive) (ace-window 16))) ; (may remove in favor of C-u C-u C-x o)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "C-x 4 C-x") 'aw-show-dispatch-help)
 (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
@@ -152,11 +152,16 @@
 
 (prelude-require-package 'vterm)
 (require 'vterm)
+(defun vterm-local (&optional arg)
+  "Ensure vterm launches in local home dir"
+  (interactive "P")
+  (let ((default-directory "~/"))
+    (vterm arg)))
 (setq vterm-buffer-name "*term*")
 ;; crux seems to assume one terminal, stomping on vterm's multi-terminal possibility.
 ;; I could potentially contribute an upgrade?
-(setq crux-shell-func 'vterm)
-(setq crux-term-func 'vterm)
+(setq crux-shell-func 'vterm-local)
+(setq crux-term-func 'vterm-local)
 (setq crux-term-buffer-name vterm-buffer-name)
 (setq vterm-max-scrollback (floor 1e5))
 (setq vterm-min-window-width hgmacs-column-size)
@@ -288,11 +293,14 @@
 ;; I am procrastinating as I think about a better solution.
 ;; My BATNA is good: Just don't have it say anything
 
+;; I'm a little frustrated with ivy. Things I miss from helm:
+;; C-f to drop into non-helm mode
+;; Matching "always" dwim. (attempting to find-file and tab-complete /ssh:explorer sometimes does not match, usually matches many)
+;; The single-tab (complete) and double-tab (complete-and-go) doesn't work well with tramp lag.
+
 ;; Recommended by https://github.com/bbatsov/projectile/issues/1232
 (defadvice projectile-project-root (around ignore-remote first activate)
   (unless (file-remote-p default-directory) ad-do-it))
-
-;; TODO when I start a terminal in a TRAMP buffer, simply failing is wrong thing to do.
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features

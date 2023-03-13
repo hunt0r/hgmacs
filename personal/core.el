@@ -1,8 +1,14 @@
 ;; General purpose functions
 (defun hgmacs-split-window-three-horizontal()
   (interactive)
+  (delete-other-windows)
   (split-window-right)
+  (other-window 1)
+  (switch-to-buffer nil)
   (split-window-right)
+  (other-window 1)
+  (switch-to-buffer nil)
+  (other-window -2)
   (balance-windows))
 
 ;; Create custom functions used for auto-creating new buffers
