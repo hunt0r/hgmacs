@@ -8,7 +8,7 @@
 (setq hgmacs-column-size 120)
 ;; (volatile-highlights-mode -1) ;; TODO should I leave this disabled?
 (global-hl-line-mode -1) ; Messes with face coloring on the current line, not useful enough
-(projectile-mode nil)
+(projectile-mode -1) ;; I'm not ready for this yet... but I'd like to learn it.
 (ad-deactivate 'exchange-point-and-mark)
 (setq whitespace-line-column hgmacs-column-size)
 (when (eq system-type 'darwin) (setq ns-function-modifier 'none))
@@ -304,6 +304,7 @@
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
+;; Idea: Work on tab completion inside compile for bazel build commands
 
 ;; Configure dbt mode and sql-indent?
 ;; (straight-use-package '(dbt-mode
