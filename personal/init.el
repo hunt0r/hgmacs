@@ -211,29 +211,28 @@
                             sort-fields))
 (setq bibtex-maintain-sorted-entries 'crossref)
 
-;; Overwrite text-scale-adjust commands with global versions
+;; Setup preferred zooming (text-scale) options:
+;;   Default zoom is be frame-wide
+;;   Some option for single-window instead
+;;   Key combos are uncommon (So don't conflict with neg-arg)
+;;   Use a hydra to get repeat-key UX
 (prelude-require-packages '(hydra default-text-scale))
 (default-text-scale-mode +1)
-(global-set-key (kbd "C--") 'negative-argument)
-(define-key default-text-scale-mode-map (kbd "C-M-=") nil)
-(define-key default-text-scale-mode-map (kbd "C-M--") nil)
-(define-key default-text-scale-mode-map (kbd "C-M-0") nil)
-;; I don't know why these were in here, removing them just in case
-(define-key default-text-scale-mode-map (kbd "ESC") nil)
-(setq default-text-scale-mode-map (delete '(27) default-text-scale-mode-map))
-;; Add the commands that I want
 (defhydra hydra-zoom () "Repeat +/-/0 to zoom in/out/reset"
   ("C-+" default-text-scale-increase)
   ("C--" default-text-scale-decrease)
   ("C-0" default-text-scale-reset)
   ("C-=" default-text-scale-increase)
   ("C-_" default-text-scale-decrease))
-
 (define-key default-text-scale-mode-map (kbd "C-x C-+") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C-=") 'hydra-zoom/body)
 (define-key default-text-scale-mode-map (kbd "C-x C--") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C-_") 'hydra-zoom/body)
 (define-key default-text-scale-mode-map (kbd "C-x C-0") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C-=") 'hydra-zoom/body)
+(define-key default-text-scale-mode-map (kbd "C-x C-_") 'hydra-zoom/body)
+;; Because I want C-- as neg-arg, disable both single-window default commands
+(global-set-key (kbd "C--") 'negative-argument)
+(global-unset-key (kbd "C-+"))
+;; TODO single-window zooming
 
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
