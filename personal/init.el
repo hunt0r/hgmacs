@@ -275,7 +275,7 @@
 
 (add-to-list 'grep-files-aliases'("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl"))
 (add-to-list 'grep-files-aliases'("bzl" . "BUILD *.bzl"))
-(add-to-list 'grep-files-aliases'("python" . "*.py *.ipynb"))
+(add-to-list 'grep-files-aliases'("py" . "*.py *.ipynb"))
 ;; Wonder if I will ever want combinations of these... cpp+bzl, py+bzl, etc.
 
 ;; When running lgrep or rgrep, I don't want ivy to directory-match at 2nd stage (for pattern).
