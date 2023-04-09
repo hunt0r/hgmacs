@@ -213,26 +213,73 @@
 
 ;; Setup preferred zooming (text-scale) options:
 ;;   Default zoom is be frame-wide
-;;   Some option for single-window instead
-;;   Key combos are uncommon (So don't conflict with neg-arg)
+;;   Use prefix arg for single-window instead
 ;;   Use a hydra to get repeat-key UX
+;;   Use uncommon key combos (so don't conflict with neg-arg)
 (prelude-require-packages '(hydra default-text-scale))
 (default-text-scale-mode +1)
-(defhydra hydra-zoom () "Repeat +/-/0 to zoom in/out/reset"
+(defhydra hydra-zoom () "Repeat C-(+/-/0) to zoom in/out/reset"
   ("C-+" default-text-scale-increase)
   ("C--" default-text-scale-decrease)
   ("C-0" default-text-scale-reset)
   ("C-=" default-text-scale-increase)
   ("C-_" default-text-scale-decrease))
-(define-key default-text-scale-mode-map (kbd "C-x C-+") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C--") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C-0") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C-=") 'hydra-zoom/body)
-(define-key default-text-scale-mode-map (kbd "C-x C-_") 'hydra-zoom/body)
+(defun text-scale-reset ()
+  "Reset text scale (zooming)"
+  (interactive)
+  (text-scale-set 0))
+;; Idea: somehow make these two noarg DRYer
+;; Idea for improvement: use interactive P to distinguish arg type
+(defun text-scale-increase-noarg (arg)
+  "Prevent ARG from getting to text-scale-increase"
+  (interactive "p")
+  (text-scale-increase 1))
+;; Idea for improvement: use interactive P to distinguish arg type
+(defun text-scale-decrease-noarg (arg)
+  "Prevent ARG from getting to text-scale-decrease"
+  (interactive "p")
+  (text-scale-decrease 1))
+(defhydra hydra-zoom-local () "Repeat C-(+/-/0) to zoom in/out/reset this window"
+  ("C-+" text-scale-increase-noarg)
+  ("C--" text-scale-decrease-noarg)
+  ("C-0" text-scale-reset)
+  ("C-=" text-scale-increase-noarg)
+  ("C-_" text-scale-decrease-noarg))
+;; Idea: somehow make these DRYer
+;; Idea for improvement: use interactive P to distinguish arg type
+(defun zoom-in (arg)
+  "By default, zoom in globally. With ARG, locally instead."
+  (interactive "p")
+  (if (equal arg 1)
+      (hydra-zoom/default-text-scale-increase)
+    (hydra-zoom-local/text-scale-increase-noarg)))
+;; Idea for improvement: use interactive P to distinguish arg type
+(defun zoom-out (arg)
+  "By default, zoom out globally. With ARG, locally instead."
+  (interactive "p")
+  (if (equal arg 1)
+      (hydra-zoom/default-text-scale-decrease)
+    (hydra-zoom-local/text-scale-decrease-noarg)))
+;; Idea for improvement: use interactive P to distinguish arg type
+(defun zoom-reset (arg)
+  "By default, reset zoom globally. With ARG, locally instead."
+  (interactive "p")
+  (if (equal arg 1)
+      (hydra-zoom/default-text-scale-reset)
+    (hydra-zoom-local/text-scale-reset)))
+(define-key default-text-scale-mode-map (kbd "C-x C-+") 'zoom-in)
+(define-key default-text-scale-mode-map (kbd "C-x C--") 'zoom-out)
+(define-key default-text-scale-mode-map (kbd "C-x C-0") 'zoom-reset)
+(define-key default-text-scale-mode-map (kbd "C-x C-=") 'zoom-in)
+(define-key default-text-scale-mode-map (kbd "C-x C-_") 'zoom-out)
 ;; Because I want C-- as neg-arg, disable both single-window default commands
 (global-set-key (kbd "C--") 'negative-argument)
 (global-unset-key (kbd "C-+"))
-;; TODO single-window zooming
+;; Also disable the s- commands that prelude added
+(global-unset-key (kbd "s-+"))
+(global-unset-key (kbd "s--"))
+(global-unset-key (kbd "s-0"))
+(global-unset-key (kbd "s-="))
 
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
