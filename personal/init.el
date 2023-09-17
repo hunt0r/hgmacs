@@ -23,6 +23,7 @@
 (setq sp-hybrid-kill-excessive-whitespace nil)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (define-key prelude-mode-map (kbd "C-a") 'hgmacs-move-beginning-of-line)
+(setq org-special-ctrl-a/e t)
 ;; Because I like end-of-line cleanup of whitespace, but don't want that when I just switch away,
 ;; disable super-save-mode (which saves on switch-away)
 (super-save-mode -1)
@@ -347,6 +348,10 @@
 ;; Recommended by https://github.com/bbatsov/projectile/issues/1232
 (defadvice projectile-project-root (around ignore-remote first activate)
   (unless (file-remote-p default-directory) ad-do-it))
+
+(global-set-key (kbd "C-z") 'hl-line-mode)
+(set-face-background 'hl-line "gray8")
+
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
