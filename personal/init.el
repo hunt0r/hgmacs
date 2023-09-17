@@ -320,10 +320,13 @@
 ;; TODO figure out how to default to this in the prompt
 (setq hgmacs-ein-default-link "http://explorer:8888")
 
-(add-to-list 'grep-files-aliases'("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl"))
-(add-to-list 'grep-files-aliases'("bzl" . "BUILD *.bzl"))
-(add-to-list 'grep-files-aliases'("py" . "*.py *.ipynb"))
+(add-to-list 'grep-files-aliases '("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl"))
+(add-to-list 'grep-files-aliases '("bzl" . "BUILD *.bzl *.bazel"))
+(add-to-list 'grep-files-aliases '("py" . "*.py *.ipynb"))
 ;; Wonder if I will ever want combinations of these... cpp+bzl, py+bzl, etc.
+
+;; Rarely (never?) want to search bazel cache
+(add-to-list 'grep-find-ignored-directories ".cache")
 
 ;; When running lgrep or rgrep, I don't want ivy to directory-match at 2nd stage (for pattern).
 ;; This is a simple disabler of that.
