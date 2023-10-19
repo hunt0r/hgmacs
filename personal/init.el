@@ -100,6 +100,7 @@
 (add-hook 'python-mode-hook 'subword-mode)
 
 (add-to-list 'auto-mode-alist '("\\.inl" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.inc" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . text-mode))
 ;; Open ASL files in python-mode for syntax highlighting
@@ -320,7 +321,7 @@
 ;; TODO figure out how to default to this in the prompt
 (setq hgmacs-ein-default-link "http://explorer:8888")
 
-(add-to-list 'grep-files-aliases '("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl"))
+(add-to-list 'grep-files-aliases '("cpp" . "*.cc *.hh *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++ *.inl *.inc"))
 (add-to-list 'grep-files-aliases '("bzl" . "BUILD *.bzl *.bazel"))
 (add-to-list 'grep-files-aliases '("py" . "*.py *.ipynb"))
 ;; Wonder if I will ever want combinations of these... cpp+bzl, py+bzl, etc.
@@ -354,7 +355,7 @@
 
 (global-set-key (kbd "C-z") 'hl-line-mode)
 (set-face-background 'hl-line "gray8")
-
+;; TODO: Change whitespace-style for text-mode. Switch lines-tail to lines-char
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
