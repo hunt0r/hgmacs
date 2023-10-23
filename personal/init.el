@@ -85,6 +85,7 @@
                               "Toggle (local) screenshare minor mode on or off. It is useful when sharing my emacs screen."
                               :lighter " ScrnShr"
                               (if screenshare-local-mode (hl-line-mode +1) (hl-line-mode -1))
+                              (if screenshare-local-mode (nlinum-mode +1) (nlinum-mode -1))
                               (if screenshare-local-mode (smooth-scroll-mode +1) (smooth-scroll-mode -1)))
 
 (define-globalized-minor-mode screenshare-mode
@@ -356,6 +357,10 @@
 (global-set-key (kbd "C-z") 'hl-line-mode)
 (set-face-background 'hl-line "gray8")
 ;; TODO: Change whitespace-style for text-mode. Switch lines-tail to lines-char
+
+;; Disabling until I learn how to configure this to not be slow.
+(add-hook 'c-mode-hook (lambda () (company-mode -1)))
+(add-hook 'c++-mode-hook (lambda () (company-mode -1)))
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
