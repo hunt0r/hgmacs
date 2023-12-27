@@ -106,7 +106,6 @@
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . text-mode))
 ;; Open ASL files in python-mode for syntax highlighting
 (add-to-list 'auto-mode-alist '("\\.asl" . python-mode))
-(add-to-list 'auto-mode-alist '("BUILD" . python-mode))
 (add-to-list 'auto-mode-alist '("\\.sadl" . python-mode))
 
 ;; Enable clipboard
