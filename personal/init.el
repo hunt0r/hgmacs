@@ -364,6 +364,18 @@
 ;; Matching "always" dwim. (attempting to find-file and tab-complete /ssh:explorer sometimes does not match, usually matches many)
 ;; The single-tab (complete) and double-tab (complete-and-go) doesn't work well with tramp lag.
 
+;;; Attempting to speed up tramp
+;; This limits vc to using git only
+(setq vc-handled-backends '(Git))
+;; From https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html, this one disables vc on tramp directories
+(setq vc-ignore-dir-regexp
+      (format "\\(%s\\)\\|\\(%s\\)"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
+;; The following assumes different emacs sessions are not modifying the same file.
+(setq remote-file-name-inhibit-locks t)
+
+
 ;; Recommended by https://github.com/bbatsov/projectile/issues/1232
 (defadvice projectile-project-root (around ignore-remote first activate)
   (unless (file-remote-p default-directory) ad-do-it))
