@@ -305,7 +305,7 @@
 ;; This is like somewhat-fuzzy.
 ;; Example: say I want to jump to "class". I could jump with "c" and get a bunch. But "cla" should be a rarer match.
 
-;;; Want C-s and C-r to work like isearch, except using ivy always
+;; Want C-s and C-r to work like isearch, except using ivy always
 (prelude-require-package 'swiper)
 (require 'swiper)
 (global-set-key (kbd "C-s") 'swiper-isearch)
