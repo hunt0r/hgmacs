@@ -376,6 +376,21 @@
 (add-hook 'c-mode-hook (lambda () (company-mode -1)))
 (add-hook 'c++-mode-hook (lambda () (company-mode -1)))
 
+(add-to-list 'cc-other-file-alist '("\\.inl\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
+(add-to-list 'cc-other-file-alist '("\\.inc\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
+;; This appends ".inl" and ".inc" to ".hpp"s other files
+(setf (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)
+      (list (list (caar (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)) ".inl" ".inc")))
+;; I do not understand why this approach fails. (And it worked once?!?)
+;; (defun alist-get-equal (key alist &optional default remove)
+;;   "A shortcut for alist-get using equal."
+;;   (alist-get key alist default remove 'equal))
+;; (setf (alist-get-equal "\\.hpp\\'" cc-other-file-alist)
+;;       (list (list (caar (alist-get-equal "\\.hpp\\'" cc-other-file-alist)) ".inl")))
+
+(add-hook 'c-initialization-hook
+          (lambda () (define-key c-mode-base-map (kbd "C-c C-f") 'ff-get-other-file)))
+
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
 ;; Idea: Work on tab completion inside compile for bazel build commands
