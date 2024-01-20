@@ -286,6 +286,21 @@
 (add-to-list 'avy-keys ?\; t)
 (setq avy-keys (delq ?h avy-keys))
 (setq avy-keys (delq ?g avy-keys))
+(add-to-list 'avy-keys ?q t)
+(add-to-list 'avy-keys ?w t)
+(add-to-list 'avy-keys ?e t)
+(add-to-list 'avy-keys ?r t)
+(add-to-list 'avy-keys ?u t)
+(add-to-list 'avy-keys ?i t)
+(add-to-list 'avy-keys ?o t)
+(add-to-list 'avy-keys ?p t)
+(add-to-list 'avy-keys ?z t)
+(add-to-list 'avy-keys ?x t)
+(add-to-list 'avy-keys ?c t)
+(add-to-list 'avy-keys ?v t)
+(add-to-list 'avy-keys ?n t)
+(add-to-list 'avy-keys ?\, t)
+(add-to-list 'avy-keys ?\. t)
 ;; Idea: does avy have functionality to accept multiple chars, then jump after a small pause?
 ;; This is like somewhat-fuzzy.
 ;; Example: say I want to jump to "class". I could jump with "c" and get a bunch. But "cla" should be a rarer match.
