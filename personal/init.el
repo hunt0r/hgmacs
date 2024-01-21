@@ -388,20 +388,38 @@
 (add-hook 'c-mode-hook (lambda () (company-mode -1)))
 (add-hook 'c++-mode-hook (lambda () (company-mode -1)))
 
-(add-to-list 'cc-other-file-alist '("\\.inl\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
-(add-to-list 'cc-other-file-alist '("\\.inc\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
-;; This appends ".inl" and ".inc" to ".hpp"s other files
-(setf (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)
-      (list (list (caar (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)) ".inl" ".inc")))
-;; I do not understand why this approach fails. (And it worked once?!?)
-;; (defun alist-get-equal (key alist &optional default remove)
-;;   "A shortcut for alist-get using equal."
-;;   (alist-get key alist default remove 'equal))
-;; (setf (alist-get-equal "\\.hpp\\'" cc-other-file-alist)
-;;       (list (list (caar (alist-get-equal "\\.hpp\\'" cc-other-file-alist)) ".inl")))
 
-(add-hook 'c-initialization-hook
-          (lambda () (define-key c-mode-base-map (kbd "C-c C-f") 'ff-get-other-file)))
+;;; C mode (CC mode) customizations
+(defun bind-ff ()
+  (define-key c-mode-base-map (kbd "C-c C-f") 'ff-get-other-file))
+(add-hook 'c-initialization-hook 'bind-ff)
+
+(defun alist-get-equal (key alist &optional default remove)
+  "A shortcut for alist-get using equal."
+  (alist-get key alist default remove 'equal))
+
+(defun cpp-ff-customization ()
+  "Create some additional extensions for ff-find-other-file"
+  (require 'find-file)
+  (add-to-list 'cc-other-file-alist '("\\.inl\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
+  (add-to-list 'cc-other-file-alist '("\\.inc\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
+  ;; This appends ".inl" and ".inc" to ".hpp"s other files
+  (setf (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)
+        (list (list (caar (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)) ".inl" ".inc")))
+  ;; I do not understand why this approach fails. (And it worked once?!?)
+  ;; (setf (alist-get-equal "\\.hpp\\'" cc-other-file-alist)
+  ;;       (list (list (caar (alist-get-equal "\\.hpp\\'" cc-other-file-alist)) ".inl" ".inc")))
+  )
+(add-hook 'c++-mode-hook 'cpp-ff-customization)
+
+(defun apr-cpp-indentation-setup ()
+  "Configure CC mode for APR"
+  (c-set-style "bsd")
+  (setq c-basic-offset 4)
+  (c-set-offset 'innamespace 0)
+  (c-set-offset 'access-label '/))
+(add-hook 'c++-mode-hook 'apr-cpp-indentation-setup)
+                                        ;(remove-hook 'c++-mode-hook 'apr-cpp-setup)
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
