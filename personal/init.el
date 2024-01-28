@@ -9,6 +9,16 @@
 ;; (volatile-highlights-mode -1) ;; TODO should I leave this disabled?
 (global-hl-line-mode -1) ; Messes with face coloring on the current line, not useful enough
 (projectile-mode -1) ;; I'm not ready for this yet... but I'd like to learn it.
+;; Consider instead:
+;; (defadvice projectile-on (around exlude-tramp activate)
+;;   should disable projectile when visiting a remote file
+;;   (unless  (--any? (and it (file-remote-p it))
+;;                    (list
+;;                     (buffer-file-name)
+;;                     list-buffers-directory
+;;                     default-directory
+;;                     dired-directory))
+;;     ad-do-it))
 (ad-deactivate 'exchange-point-and-mark)
 (setq whitespace-line-column hgmacs-column-size)
 (when (eq system-type 'darwin) (setq ns-function-modifier 'none))
