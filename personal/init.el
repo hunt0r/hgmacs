@@ -430,6 +430,17 @@
   (c-set-offset 'access-label '/))
 (add-hook 'c++-mode-hook 'apr-cpp-indentation-setup)
                                         ;(remove-hook 'c++-mode-hook 'apr-cpp-setup)
+;;; General functionality
+(defun copy-buffer-file-name ()
+  "Copy the current buffer's (full) file name to the kill ring."
+  (interactive)
+  (kill-new (buffer-file-name)))
+
+;;; bazel mode functionality
+(defun copy-bazel-identifier-at-point ()
+  "Copy identifier at point (to the kill ring)."
+  (interactive)
+  (kill-new (xref-backend-identifier-at-point 'bazel-mode)))
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
