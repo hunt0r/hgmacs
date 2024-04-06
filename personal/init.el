@@ -371,10 +371,28 @@
 ;; I am procrastinating as I think about a better solution.
 ;; My BATNA is good: Just don't have it say anything
 
-;; I'm a little frustrated with ivy. Things I miss from helm:
-;; C-f to drop into non-helm mode
-;; Matching "always" dwim. (attempting to find-file and tab-complete /ssh:explorer sometimes does not match, usually matches many)
-;; The single-tab (complete) and double-tab (complete-and-go) doesn't work well with tramp lag.
+;;; On ivy (and counsel? And swiper?)
+;; TODO single-tab (complete) and double-tab (complete-and-go) doesn't work well with tramp lag. Can I use other bindings to achieve what I want?
+;; C-m: same as RET: done.
+;; M-o: open a menu to select from ; TODO HGM: Does not work?
+;; C-j: same as TAB TAB: complete-dir or done.
+;; C-M-j: done-no-completion
+;; C-c C-r: ivy-resume (useful if accidentally exited early)
+;; C-: ivy-avy to select ; TODO HGM: Does not work?
+;; C-M-m: non-exiting C-m ; TODO HGM: Does not work?
+;; M-i: complete, but do not select
+;; M-j: insert subword at point into ivy-search
+;; S-SPC: restrict-to-these then restart matching
+;; C-r: like shell C-r to search command history
+;; M-w: copy all matches to kill-ring (Use M-i M-w to get just one)
+;; C-o: ivy-hydra/body ; TODO HGM: Does not work
+;; C-c C-o: ivy-occur saves current completion candidates to buffer for further operation
+;; M-r: toggle 'regex-mode' (useful for literal ., for instance)
+;; /ssh: C-j: complete for TRAMP hosts
+;;
+;; TODO An ivy command to "drop into non-ivy mode"?
+;; TODO Why does tab-complete not always work? e.g. /ssh:explorer sometimes does not match
+
 
 ;;; Attempting to speed up tramp
 ;; This limits vc to using git only
