@@ -309,7 +309,8 @@
 (add-to-list 'avy-keys ?c t)
 (add-to-list 'avy-keys ?v t)
 (add-to-list 'avy-keys ?n t)
-(add-to-list 'avy-keys ?\, t)
+;; Having both , and . was visually confusing. Keep only one.
+;; (add-to-list 'avy-keys ?\, t)
 (add-to-list 'avy-keys ?\. t)
 ;; Idea: does avy have functionality to accept multiple chars, then jump after a small pause?
 ;; This is like somewhat-fuzzy.
