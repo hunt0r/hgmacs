@@ -443,8 +443,24 @@
   (interactive)
   (kill-new (xref-backend-identifier-at-point 'bazel-mode)))
 
+;;; learning and teaching emacs fu
+(defun learn ()
+  "Give me a random tip to learn from"
+  (interactive)
+  (prelude-tip-of-the-day))
+
+;; prelude-tips is stored by value, other stuff "pushes" to it. That's a good pattern for me.
+
+(defun teach ()
+  "Push a tip permanently to prelude-tips"
+  (interactive)
+  (message "TODO. In the meantime, do it manually at this func's def."))
+
+(setq hgm-tips '(
+                 "M-x teach to add a tip to the learn list."))
+(dolist (tip hgm-tips prelude-tips) (add-to-list 'prelude-tips tip t))
+
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
-;; Idea: Some sort of mechanism for reminding me about new emacs/prelude features
 ;; Idea: Work on tab completion inside compile for bazel build commands
 
 ;; Configure dbt mode and sql-indent?
