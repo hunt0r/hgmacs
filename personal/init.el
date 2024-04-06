@@ -46,6 +46,7 @@
 (setq company-minimum-prefix-length 3)
 (key-chord-unset-global "xx")
 (delete "Press <xx> quickly to execute extended command." key-chord-tips)
+(if global-auto-revert-mode (setq magit-auto-revert-mode nil))
 
 ;; Auth saved my ssh password in raw text form, I didn't like that.
 ;; Would be glad to find some more secure option...
