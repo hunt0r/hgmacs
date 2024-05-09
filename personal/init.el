@@ -463,6 +463,7 @@
   "Copy identifier at point (to the kill ring)."
   (interactive)
   (kill-new (xref-backend-identifier-at-point 'bazel-mode)))
+(define-key bazel-mode-map (kbd "C-c M-q") 'copy-bazel-identifier-at-point)
 
 ;;; learning and teaching emacs fu
 (defun learn ()
