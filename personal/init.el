@@ -416,11 +416,15 @@
 (add-hook 'c-mode-hook (lambda () (company-mode -1)))
 (add-hook 'c++-mode-hook (lambda () (company-mode -1)))
 
+(add-hook 'python-mode-hook (lambda () (define-key python-mode-map (kbd "C-c C-g") 'bazel-find-build-file)))
 
 ;;; C mode (CC mode) customizations
 (defun bind-ff ()
   (define-key c-mode-base-map (kbd "C-c C-f") 'ff-get-other-file))
 (add-hook 'c-initialization-hook 'bind-ff)
+;; TODO: Create a "find other other file" which skips the first match and seeks the 2nd one. Perhaps bind to C-c C-v?
+
+(add-hook 'c-initialization-hook (lambda () (define-key c-mode-base-map (kbd "C-c C-g") 'bazel-find-build-file)))
 
 (defun alist-get-equal (key alist &optional default remove)
   "A shortcut for alist-get using equal."
