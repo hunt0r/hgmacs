@@ -313,9 +313,7 @@
 ;; Having both , and . was visually confusing. Keep only one.
 ;; (add-to-list 'avy-keys ?\, t)
 (add-to-list 'avy-keys ?\. t)
-;; Idea: does avy have functionality to accept multiple chars, then jump after a small pause?
-;; This is like somewhat-fuzzy.
-;; Example: say I want to jump to "class". I could jump with "c" and get a bunch. But "cla" should be a rarer match.
+(key-chord-define-global "jk" 'avy-goto-char-timer)
 
 ;; Want C-s and C-r to work like isearch, except using ivy always
 (prelude-require-package 'swiper)
