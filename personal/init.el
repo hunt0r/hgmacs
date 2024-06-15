@@ -1,3 +1,7 @@
+;; Q: How does one "unset" a variable which was set with setq?
+;; Q: Why would I customize when I have setq?
+;; Q: Why doesn't C-M-k come into emacs? (Is mac blocking?)
+
 ;; Set command as meta and option as super
 (prelude-swap-meta-and-super)
 
