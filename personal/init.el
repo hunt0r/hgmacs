@@ -486,6 +486,32 @@
                  "M-x teach to add a tip to the learn list."))
 (dolist (tip hgm-tips prelude-tips) (add-to-list 'prelude-tips tip t))
 
+(setq magit-branch-prefer-remote-upstream '("master" "develop"))
+;; HGM: WIP, what to do when not on internet?
+;; (setq magit-repository-directories'(("/Users/hmcclelland/.emacs.d/" . 0)
+;;                                     ("/ssh:explorer:~/av/" . 0)
+;;                                     ("/ssh:explorer:~/adas-platform/" . 0)))
+
+;; TODO: Learn to use bookmarks / registers instead.
+(global-set-key (kbd "C-c C-l") (lambda () (interactive)(find-file "/Users/hmcclelland/.emacs.d/personal/init.el")))
+
+;; TODO: Quick keybinding for "open this file's BUILD file/target" like C-f gets the other.
+;; TODO: Prefix arg to get the "other" other file. (.inc)
+
+;; For adding a new include:
+(global-set-key (kbd "C-c M-w") 'copy-buffer-file-name)
+;; Visit the file
+;; copy-buffer-file-name (C-c M-w)
+;; Create new #include statement
+;; Yank copied buffer-file-name
+;; Mark paragraph
+;; Sort lines alphabetically
+
+;; Need faster file recall. Projectile?
+
+;; Want "go to this thing". LSP?
+
+
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Work on tab completion inside compile for bazel build commands
 
