@@ -3,7 +3,8 @@
 ;; Q: Why doesn't C-M-k come into emacs? (Is mac blocking?)
 
 ;; Set command as meta and option as super
-(prelude-swap-meta-and-super)
+(when (eq system-type 'darwin)
+  (prelude-swap-meta-and-super))
 
 ;; Remove GUI scrollbar
 (scroll-bar-mode -1)
