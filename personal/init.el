@@ -464,6 +464,8 @@
   (kill-new (buffer-file-name)))
 
 ;;; bazel mode functionality
+;; Prerequisite: git clone https://github.com/bazelbuild/emacs-bazel-mode.git ~/emacs-bazel-mode
+;; Prerequisite: ln -s ~/emacs-bazel-mode/bazel.el ~/.emacs.d/personal/
 (defun copy-bazel-identifier-at-point ()
   "Copy identifier at point (to the kill ring)."
   (interactive)
