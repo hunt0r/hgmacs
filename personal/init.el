@@ -1,5 +1,7 @@
 ;; Q: Why would I customize when I have setq?
+;; A: This is frequently debated. I should find what I like. Learn both... learn all?
 ;; Q: Why doesn't C-M-k come into emacs? (Is mac blocking?)
+;; A: It does, at least now.
 
 ;; Set command as meta and option as super
 (when (eq system-type 'darwin)
