@@ -1,4 +1,3 @@
-;; Q: How does one "unset" a variable which was set with setq?
 ;; Q: Why would I customize when I have setq?
 ;; Q: Why doesn't C-M-k come into emacs? (Is mac blocking?)
 
@@ -486,7 +485,8 @@
   (message "TODO. In the meantime, do it manually at this func's def."))
 
 (setq hgm-tips '(
-                 "M-x teach to add a tip to the learn list."))
+                 "M-x teach to add a tip to the learn list."
+                 "(makunbound 'varname) to erase/clear variable varname"))
 (dolist (tip hgm-tips prelude-tips) (add-to-list 'prelude-tips tip t))
 
 (setq magit-branch-prefer-remote-upstream '("master" "develop"))
