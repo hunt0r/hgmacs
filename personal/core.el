@@ -1,13 +1,15 @@
 ;; General purpose functions
+(defun recent-non-displayed-buffer-in-new-window ()
+  (other-window 1)
+  (switch-to-buffer nil))
+
 (defun hgmacs-split-window-three-horizontal()
   (interactive)
   (delete-other-windows)
   (split-window-right)
-  (other-window 1)
-  (switch-to-buffer nil)
+  (recent-non-displayed-buffer-in-new-window)
   (split-window-right)
-  (other-window 1)
-  (switch-to-buffer nil)
+  (recent-non-displayed-buffer-in-new-window)
   (other-window -2)
   (balance-windows))
 
