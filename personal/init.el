@@ -159,6 +159,7 @@
 
 (setq org-default-notes-file "~/scratch.org")
 
+(global-set-key (kbd "C-x 4 2") 'hgmacs-split-window-two-horizontal)
 (global-set-key (kbd "C-x 4 3") 'hgmacs-split-window-three-horizontal)
 
 ;; Org mode keybindings (from Org mode 1.3)

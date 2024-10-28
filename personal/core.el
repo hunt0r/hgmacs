@@ -13,6 +13,14 @@
   (other-window -2)
   (balance-windows))
 
+(defun hgmacs-split-window-two-horizontal()
+  (interactive)
+  (delete-other-windows)
+  (split-window-right)
+  (recent-non-displayed-buffer-in-new-window)
+  (other-window -1)
+  (balance-windows))
+
 ;; Create custom functions used for auto-creating new buffers
 (defun hgmacs-first-unused-index (base-string)
   "Return the first unused index (for a unique buffer name) counting from 0.
