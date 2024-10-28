@@ -137,9 +137,11 @@
 ;; Also consider mod to ace-window that if point is in same pos as letter, do something smart like hide point
 (global-set-key (kbd "C-x o") 'ace-window) ; Remember C-u = swap, C-u C-u = delete
 (global-set-key (kbd "C-x 4 0") (lambda () (interactive) (ace-window 16))) ; (may remove in favor of C-u C-u C-x o)
-(global-set-key (kbd "<C-tab>") 'other-window)
+;; HGM: temporarily disable this, attempting to rely only on avy+key-chords for window hopping
+;; Idea: If I keep this, make avy-goto-line always have top line as the ace-window char for this window
+;; (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "C-x 4 C-x") 'aw-show-dispatch-help)
-(global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
+;; (global-set-key (kbd "<C-S-tab>") (lambda () (interactive nil) (other-window -1)))
 (setq aw-dispatch-always t)
 ;; Make this also work in magit
 (defun hgmacs-fix-C-tab-in-magit ()
@@ -151,7 +153,7 @@
         (message "Magit mode: losing C-M-<tab>'s binding to %s" binding-to-stomp))
       (define-key magit-mode-map (kbd "<C-M-tab>") binding-to-transfer)
       (define-key magit-mode-map (kbd "<C-tab>") nil))))
-(add-hook 'magit-mode-hook 'hgmacs-fix-C-tab-in-magit)
+;; (add-hook 'magit-mode-hook 'hgmacs-fix-C-tab-in-magit)
 
 
 (prelude-require-package 'with-editor)
