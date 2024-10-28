@@ -9,7 +9,7 @@
 (setq hgmacs-column-size 120)
 ;; (volatile-highlights-mode -1) ;; TODO should I leave this disabled?
 (global-hl-line-mode -1) ; Messes with face coloring on the current line, not useful enough
-(projectile-mode -1) ;; I'm not ready for this yet... but I'd like to learn it.
+(projectile-mode +1) ; (Was already on, I think... as I learn this, can drop it)
 ;; Consider instead:
 ;; (defadvice projectile-on (around exlude-tramp activate)
 ;;   should disable projectile when visiting a remote file
