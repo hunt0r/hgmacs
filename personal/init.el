@@ -490,7 +490,7 @@
                  "(makunbound 'varname) to erase/clear variable varname"))
 (dolist (tip hgm-tips prelude-tips) (add-to-list 'prelude-tips tip t))
 
-(setq magit-branch-prefer-remote-upstream '("master" "develop"))
+(setq magit-branch-prefer-remote-upstream '("master" "develop" "main"))
 ;; HGM: WIP, what to do when not on internet?
 ;; (setq magit-repository-directories'(("/Users/hmcclelland/.emacs.d/" . 0)
 ;;                                     ("/ssh:explorer:~/av/" . 0)
