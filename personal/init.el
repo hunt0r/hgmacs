@@ -123,7 +123,7 @@
 ;; Enable clipboard
 (setq x-select-enable-clipboard t)
 
-;; Use C-<tab> / C-S-<tab> for quick switching between windows, C-x o for accurate switch
+;; I use both a quick-switch (maybe forward and backward) and an accurate-switch
 (global-set-key [remap other-window] nil)
 (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\; ?g ?h))
 (custom-set-faces '(aw-leading-char-face ((default (:height 3.0 :inherit ace-jump-face-foreground))
