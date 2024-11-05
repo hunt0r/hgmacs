@@ -443,6 +443,8 @@
   ;; This appends ".inl" and ".inc" to ".hpp"s other files
   (setf (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)
         (list (list (caar (alist-get "\\.hpp\\'" cc-other-file-alist nil nil 'equal)) ".inl" ".inc")))
+  (setf (alist-get "\\.hh\\'" cc-other-file-alist nil nil 'equal)
+        (list (list (caar (alist-get "\\.hh\\'" cc-other-file-alist nil nil 'equal)) ".inl" ".inc")))
   ;; I do not understand why this approach fails. (And it worked once?!?)
   ;; (setf (alist-get-equal "\\.hpp\\'" cc-other-file-alist)
   ;;       (list (list (caar (alist-get-equal "\\.hpp\\'" cc-other-file-alist)) ".inl" ".inc")))
