@@ -517,6 +517,7 @@
 
 ;; Want "go to this thing". LSP?
 
+(prelude-require-package 'protobuf-mode)
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Work on tab completion inside compile for bazel build commands
