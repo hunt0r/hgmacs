@@ -473,6 +473,10 @@
   (interactive)
   (kill-new (xref-backend-identifier-at-point 'bazel-mode)))
 (define-key bazel-mode-map (kbd "C-c M-q") 'copy-bazel-identifier-at-point)
+;; Known issue with ivy in bazel-mode: https://github.com/bazelbuild/emacs-bazel-mode/blob/master/manual.org#known-issues
+(dolist (function '(bazel-build bazel-run bazel-test bazel-coverage))
+  (add-to-list 'ivy-completing-read-handlers-alist
+               `(,function . completing-read-default)))
 
 ;;; learning and teaching emacs fu
 (defun learn ()
