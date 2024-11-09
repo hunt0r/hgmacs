@@ -10,7 +10,7 @@
 ;; (volatile-highlights-mode -1) ;; TODO should I leave this disabled?
 (global-hl-line-mode -1) ; Messes with face coloring on the current line, not useful enough
 (projectile-mode +1) ; (Was already on, I think... as I learn this, can drop it)
-;; Consider instead:
+;; Consider this to speed up projectile-remote usage:
 ;; (defadvice projectile-on (around exlude-tramp activate)
 ;;   should disable projectile when visiting a remote file
 ;;   (unless  (--any? (and it (file-remote-p it))
@@ -20,6 +20,25 @@
 ;;                     default-directory
 ;;                     dired-directory))
 ;;     ad-do-it))
+;; Since super does not (yet) transmit over my X, I want to duplicate all those bindings as "alt"
+;; So I copy-pasted from prelude setup. If I keep this, may find a more elegant way.
+(when prelude-super-keybindings
+  (define-key prelude-mode-map (kbd "A-p") 'projectile-command-map))
+(when prelude-super-keybindings
+  ;; crux
+  (define-key prelude-mode-map (kbd "A-r") 'crux-recentf-find-file)
+  (define-key prelude-mode-map (kbd "A-j") 'crux-top-join-line)
+  (define-key prelude-mode-map (kbd "A-k") 'crux-kill-whole-line)
+  (define-key prelude-mode-map (kbd "A-o") 'crux-smart-open-line-above)
+  ;; magit
+  (define-key prelude-mode-map (kbd "A-m m") 'magit-status)
+  (define-key prelude-mode-map (kbd "A-m j") 'magit-dispatch)
+  (define-key prelude-mode-map (kbd "A-m k") 'magit-file-dispatch)
+  (define-key prelude-mode-map (kbd "A-m l") 'magit-log-buffer-file)
+  (define-key prelude-mode-map (kbd "A-m b") 'magit-blame)
+  ;; misc
+  (define-key prelude-mode-map (kbd "A-/") 'hippie-expand))
+
 (ad-deactivate 'exchange-point-and-mark)
 (setq whitespace-line-column hgmacs-column-size)
 (when (eq system-type 'darwin) (setq ns-function-modifier 'none))
