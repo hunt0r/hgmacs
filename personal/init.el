@@ -107,9 +107,17 @@
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
+(defun hgmacs-require-package (package)
+  "Weird that prelude-require-package does not actually require. So this does."
+  (prelude-require-package package)
+  (require package))
+
+(defun hgmacs-require-packages (packages)
+  "Loop over packages."
+  (mapc #'hgmacs-require-package packages))
+
 ;; Create screenshare-mode
-(prelude-require-package 'smooth-scroll)
-(require 'smooth-scroll)
+(hgmacs-require-package 'smooth-scroll)
 (setq smooth-scroll/hscroll-step-size 1)
 (setq smooth-scroll/vscroll-step-size 1)
 (easy-mmode-define-minor-mode screenshare-local-mode
@@ -176,8 +184,7 @@
 ;; (add-hook 'magit-mode-hook 'hgmacs-fix-C-tab-in-magit)
 
 
-(prelude-require-package 'with-editor)
-(require 'with-editor)
+(hgmacs-require-package 'with-editor)
 
 (setq org-default-notes-file "~/scratch.org")
 
@@ -187,8 +194,7 @@
 ;; Org mode keybindings (from Org mode 1.3)
 (global-set-key "\C-cc" 'org-capture)
 
-(prelude-require-package 'vterm)
-(require 'vterm)
+(hgmacs-require-package 'vterm)
 (defun vterm-local (&optional arg)
   "Ensure vterm launches in local home dir"
   (interactive "P")
@@ -253,7 +259,7 @@
 ;;   Use prefix arg for single-window instead
 ;;   Use a hydra to get repeat-key UX
 ;;   Use uncommon key combos (so don't conflict with neg-arg)
-(prelude-require-packages '(hydra default-text-scale))
+(hgmacs-require-packages '(hydra default-text-scale))
 (default-text-scale-mode +1)
 (defhydra hydra-zoom () "Repeat C-(+/-/0) to zoom in/out/reset"
   ("C-+" default-text-scale-increase)
@@ -340,8 +346,7 @@
 (key-chord-define-global "jk" 'avy-goto-char-timer)
 
 ;; Want C-s and C-r to work like isearch, except using ivy always
-(prelude-require-package 'swiper)
-(require 'swiper)
+(hgmacs-require-package 'swiper)
 (global-set-key (kbd "C-s") 'swiper-isearch)
 (global-set-key (kbd "C-r") 'swiper-isearch-backward)
 ;; swiper ideas:
@@ -354,7 +359,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
-(prelude-require-packages '(lsp-mode lsp-ui google-c-style latex-math-preview math-preview ein))
+(hgmacs-require-packages '(lsp-mode lsp-ui google-c-style latex-math-preview math-preview ein))
 
 (setq-default ein:output-area-inlined-images t) ;; if you want plots printed inline with notebook
 ;;(setq ein:output-area-inlined-images nil) ;; if you want them exported to app (configured in mailcap-user-mime-data)
@@ -456,7 +461,7 @@
 
 (defun cpp-ff-customization ()
   "Create some additional extensions for ff-find-other-file"
-  (require 'find-file)
+  (hgmacs-require-package 'find-file)
   (add-to-list 'cc-other-file-alist '("\\.inl\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
   (add-to-list 'cc-other-file-alist '("\\.inc\\'" (".hpp" ".h++" ".hxx" ".hh" ".h")) t)
   ;; This appends ".inl" and ".inc" to ".hpp"s other files
@@ -544,7 +549,7 @@
 
 ;; Want "go to this thing". LSP?
 
-(prelude-require-package 'protobuf-mode)
+(hgmacs-require-package 'protobuf-mode)
 
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Work on tab completion inside compile for bazel build commands
