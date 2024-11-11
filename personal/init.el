@@ -63,6 +63,39 @@
   (make-local-variable 'whitespace-active-style)
   (delete 'tabs whitespace-active-style))
 (add-hook 'emacs-lisp-mode-hook 'hgmacs-remove-tabs-from-whitespace-active-style)
+
+(defun hgmacs-disable-whitespace-in-buffer ()
+  "Turn off whitespace highlighting in some effective way.
+
+   I don't understand what all this does or why, sometime perhaps refine it."
+  ;; Not sure if this is necessary, but do it anyway
+  (set (make-local-variable 'prelude-whitespace) nil)
+  (set (make-local-variable 'whitespace-style) nil)
+  ;; Also, using this command makes this buffer-local automatically
+  (whitespace-mode -1))
+(defun disable-whitespace-in-scratch-buffer ()
+  "Disable whitespace in scratch buffer."
+  (when (equal (buffer-name) "*scratch*")
+    (hgmacs-disable-whitespace-in-buffer)))
+;; This hook runs too late. What earlier thing is causing the fail?
+(add-hook 'lisp-interaction-mode-hook 'disable-whitespace-in-scratch-buffer)
+
+
+
+(defun hgmacs-fix-whitespace-highlight-issue-in-describe-variable ()
+  "When I describe-variable, the value is sometimes whitespace highlighted in a bad way."
+  (defun disable-prelude-whitespace-in-temp-buffer ()
+    "Disable whitespace in a buffer named ' *temp*'.
+
+   This buffer seems to be a temporary component while buiding the *Help* of describe-variable.
+   (And so it has the local variable value of prelude-whitespace which is relevant.)"
+    (when (equal (buffer-name) " *temp*")
+      (setq-local prelude-whitespace nil)))
+  (setq hook-depth-to-run-this-before-prelude-prog-mode -1)
+  (add-hook 'prog-mode-hook 'disable-prelude-whitespace-in-temp-buffer hook-depth-to-run-this-before-prelude-prog-mode))
+
+(hgmacs-fix-whitespace-highlight-issue-in-describe-variable)
+
 (setq company-minimum-prefix-length 3)
 (key-chord-unset-global "xx")
 (delete "Press <xx> quickly to execute extended command." key-chord-tips)
