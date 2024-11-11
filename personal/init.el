@@ -439,7 +439,13 @@
 
 (global-set-key (kbd "C-z") 'hl-line-mode)
 (set-face-background 'hl-line "gray8")
-;; TODO: Change whitespace-style for text-mode. Switch lines-tail to lines-char
+
+(defun hgmacs-text-mode-whitespace-style-changes ()
+  "Do some changes that I want"
+  (make-local-variable 'whitespace-style)
+  (delete 'lines-tail whitespace-style)
+  (add-to-list 'whitespace-style 'lines-char))
+(add-hook 'text-mode-hook 'hgmacs-text-mode-whitespace-style-changes)
 
 ;; Disabling until I learn how to configure this to not be slow.
 (add-hook 'c-mode-hook (lambda () (company-mode -1)))
