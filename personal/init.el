@@ -399,6 +399,24 @@
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 (hgmacs-require-packages '(lsp-mode lsp-ui google-c-style latex-math-preview math-preview ein))
+(hgmacs-require-package 'eglot)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+;; First, generate compile_commands.json via:
+;;   python -m tools.compdb.compdb --watch --remote-index-mode=grpc
+;; Next, add "build --config=compdb" to av/user.bazelrc (can also add "build --config=remote")
+;; Finally, this magic:
+(add-to-list 'eglot-server-programs
+              '((c++-mode c-mode)
+                "/home/hmcclelland/av/tools/vscode/scripts/clangd.sh"
+                "--remote-index-address=clangd-index-server-grpc-prod.bluel3.tools:443"
+                "--project-root=/home/hmcclelland/av"))
+;; I need this magic command when kaso headers are not auto-detected:
+;; bazel build --compile_one_dependency --output_groups=compdb_files path/to/using_proto_kaso.cc
+;; (might need to restart clangd?)
+;; Can also do bazel build --output_groups=compdb_files //my/cc/bazel:target (or even better //my/cc/bazel:*)
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 (setq-default ein:output-area-inlined-images t) ;; if you want plots printed inline with notebook
 ;;(setq ein:output-area-inlined-images nil) ;; if you want them exported to app (configured in mailcap-user-mime-data)
@@ -487,8 +505,8 @@
 (add-hook 'text-mode-hook 'hgmacs-text-mode-whitespace-style-changes)
 
 ;; Disabling until I learn how to configure this to not be slow.
-(add-hook 'c-mode-hook (lambda () (company-mode -1)))
-(add-hook 'c++-mode-hook (lambda () (company-mode -1)))
+;; (add-hook 'c-mode-hook (lambda () (company-mode -1)))
+;; (add-hook 'c++-mode-hook (lambda () (company-mode -1)))
 
 (add-hook 'python-mode-hook (lambda () (define-key python-mode-map (kbd "C-c C-g") 'bazel-find-build-file)))
 
