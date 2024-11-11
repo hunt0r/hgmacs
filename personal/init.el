@@ -521,7 +521,8 @@
 
 (setq hgm-tips '(
                  "M-x teach to add a tip to the learn list."
-                 "(makunbound 'varname) to erase/clear variable varname"))
+                 "(makunbound 'varname) to erase/clear variable varname."
+                 "(delete ELT SEQ) to drop an item from a list in-place."))
 (dolist (tip hgm-tips prelude-tips) (add-to-list 'prelude-tips tip t))
 
 (setq magit-branch-prefer-remote-upstream '("master" "develop" "main"))
