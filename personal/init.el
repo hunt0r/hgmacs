@@ -376,7 +376,13 @@
 ;; Having both , and . was visually confusing. Keep only one.
 ;; (add-to-list 'avy-keys ?\, t)
 (add-to-list 'avy-keys ?\. t)
+;; TIL: key-chord binds the mirror too! That makes so much sense.
 (key-chord-define-global "jk" 'avy-goto-char-timer)
+(global-set-key (kbd "M-g j") 'avy-goto-word-1)
+(global-set-key (kbd "M-g l") 'avy-goto-line)
+(global-set-key (kbd "M-g k") 'avy-goto-char-timer)
+(key-chord-define-global "j;" 'other-window)
+(key-chord-define-global "J:" (lambda () (interactive nil) (other-window -1)))
 
 ;; Want C-s and C-r to work like isearch, except using ivy always
 (hgmacs-require-package 'swiper)
