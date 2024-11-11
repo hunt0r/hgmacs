@@ -58,11 +58,11 @@
 ;; disable super-save-mode (which saves on switch-away)
 (super-save-mode -1)
 ;; Much elisp code has tabs, this doesn't bother me, so don't highlight them
-(defun remove-tabs-from-whitespace-active-style ()
+(defun hgmacs-remove-tabs-from-whitespace-active-style ()
   "Used to prevent tab-highlighting in some modes (e.g. elisp)"
   (make-local-variable 'whitespace-active-style)
-  (setq whitespace-active-style (delq 'tabs whitespace-active-style)))
-(add-hook 'emacs-lisp-mode-hook 'remove-tabs-from-whitespace-active-style)
+  (delete 'tabs whitespace-active-style))
+(add-hook 'emacs-lisp-mode-hook 'hgmacs-remove-tabs-from-whitespace-active-style)
 (setq company-minimum-prefix-length 3)
 (key-chord-unset-global "xx")
 (delete "Press <xx> quickly to execute extended command." key-chord-tips)
