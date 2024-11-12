@@ -544,8 +544,18 @@
   (setq c-basic-offset 4)
   (c-set-offset 'innamespace 0)
   (c-set-offset 'access-label '/))
-(add-hook 'c++-mode-hook 'apr-cpp-indentation-setup)
-                                        ;(remove-hook 'c++-mode-hook 'apr-cpp-setup)
+;; (add-hook 'c++-mode-hook 'apr-cpp-indentation-setup)
+
+;; Smartparens uses sp-forward-slurp-sexp but that doesn't work as well in programming contexts.
+;; (example: a forward-slurp in C++ slurps in the final semicolon)
+(defun hgmacs-forward-slurp (&optional arg)
+  "Select the best strictparens forward-slurp to use and use it"
+  (interactive "*P")
+  (if (equal major-mode 'c++-mode)
+      (sp-slurp-hybrid-sexp)
+    (sp-forward-slurp-sexp arg)))
+(define-key smartparens-mode-map [remap sp-forward-slurp-sexp] 'hgmacs-forward-slurp)
+
 ;;; General functionality
 (defun copy-buffer-file-name ()
   "Copy the current buffer's (full) file name to the kill ring."
