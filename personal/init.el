@@ -628,6 +628,9 @@
 (global-set-key (kbd "M-n") 'next-error)
 (global-set-key (kbd "M-p") 'previous-error)
 
+;; So that emacs can use (local) ssh-agent, don't need to enter password on every git push/fetch
+(hgmacs-require-package 'ssh-agency)
+
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Work on tab completion inside compile for bazel build commands
 
