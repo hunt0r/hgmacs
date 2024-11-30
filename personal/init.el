@@ -625,6 +625,9 @@
 
 (hgmacs-require-package 'protobuf-mode)
 
+(global-set-key (kbd "M-n") 'next-error)
+(global-set-key (kbd "M-p") 'previous-error)
+
 ;; Idea: Get C-tab (and C-S-tab) briefly (0.1 sec) highlight the current line?
 ;; Idea: Work on tab completion inside compile for bazel build commands
 
