@@ -574,10 +574,10 @@
 (dolist (function '(bazel-build bazel-run bazel-test bazel-coverage))
   (add-to-list 'ivy-completing-read-handlers-alist
                `(,function . completing-read-default)))
-;; Flycheck in bazel mode hits some xhost error. Simply disable till I figure out x-forwarding problems.
+;; Don't need this anymore, I found the issue. Can delete sometime.
 (defun disable-flycheck ()
   (flycheck-mode -1))
-(add-hook 'bazel-mode-hook 'disable-flycheck)
+;; (add-hook 'bazel-mode-hook 'disable-flycheck)
 
 ;;; learning and teaching emacs fu
 (defun learn ()
